@@ -1,8 +1,13 @@
 import numpy as np
 import pickle 
-import matplotlib.pyplot as plt
-from sklearn import datasets, linear_model
+import matplotlib.pyplot as plot
+
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+from sklearn.pipeline import Pipeline
+
 from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.model_selection import train_test_split
 
 
 with open('./data.pkl', 'rb') as f:
@@ -15,12 +20,10 @@ with open('./data.pkl', 'rb') as f:
 size = data.shape[0]
 np.random.shuffle(data)
 
-x = int(0.9*size)   # x entries for training 90%
-y = int(0.1*size)   # y entries for testing 10%
+x=data[:,:-1]
+y=data[:,1]
 
-train=data[0:x,:]
-test=data[x:size+1,:]
-np.random.shuffle(test)
+x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=1/10, random_state=0)
 
 k=0
 temp=[]
@@ -28,17 +31,25 @@ tempx=[]
 tempy=[]
 
 for i in range (10):
-    temp.append(train[k:k+9,:])
-    tempx.append(train[k:k+9,0])
-    tempy.append(train[k:k+9,1])
+    tempx.append(x_train[k:k+9])
+    tempy.append(y_train[k:k+9])
     k+=9
 
-f_train=np.array(temp)
 x_train=np.array(tempx)
 y_train=np.array(tempy)
 
 print(x_train)
-print(f_train[0])
+
+for degree in range (1,9):  #For the polynomial degrees
+    for i in range (10):    #For the training set
+        reg = LinearRegression()
+        reg.fit(x_train[i], y_train[i])
+        plot.scatter(x_train[i], y_train[i], color = 'red')
+        plot.plot(x_train[i], reg.predict(x_train[i]), color = 'blue')
+        plot.title('X vs Y (Training set)')
+        plot.xlabel('X-axis')
+        plot.ylabel('Y-axis')
+        plot.show()
 
 
 
