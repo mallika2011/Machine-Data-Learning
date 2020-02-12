@@ -6,6 +6,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
+import pandas as pd
 
 
 with open('./data.pkl', 'rb') as f:
@@ -36,25 +37,57 @@ for i in range (10):
 x_train=np.array(tempx)
 y_train=np.array(tempy)
 
+def func(x):
+    x = x.ravel()
+
+    return np.exp(-x ** 2) + 1.5 * np.exp(-(x - 2) ** 2)
+
+
+v_table=np.zeros((10,10))
+b_table=np.zeros((10,10))
+
+bias_mean=[]
+var_mean=[]
+
 #For the polynomial degrees
 for degree in range (1,10):  
-    poly = PolynomialFeatures(degree=degree)
-    
+    bias_sq=[]
+    var=[]
     #For the training set
-    for i in range (10):    
+    for i in range (10):   
+        poly = PolynomialFeatures(degree=degree, include_bias=False)
+
         #Transform the pilynomial features as required
         X = poly.fit_transform(x_train[i])
+        X_TEST = poly.fit_transform(x_test)
         reg = LinearRegression()
         #Train the model for the chosen training set
         reg.fit(X, y_train[i])
-        plot.scatter(x_train[i], y_train[i], color = 'red')
-        plot.scatter(x_train[i], reg.predict(X), color = 'blue')
-        plot.title('X vs Y (Training set)')
-        plot.xlabel('X-axis')
-        plot.ylabel('Y-axis')
-        plot.show()
+        y_predict = reg.predict(X_TEST)
+        # plot.scatter(x_train[i], y_train[i], color = 'red')
+        # plot.scatter(x_train[i], reg.predict(X), color = 'blue')
+        bias_sq.append((np.mean(y_predict) - y_test) ** 2)
+        var.append(np.var(y_predict))
+
+    bias_mean.append(np.mean(bias_sq))
+    var_mean.append(np.mean(var))
+bias_mean=np.array(bias_mean)
+var_mean=np.array(var_mean)
+
+print(pd.DataFrame(var_mean))
+print(pd.DataFrame(bias_mean))
+
+print(var_mean)
+print(bias_mean)
 
 
+plot.plot(range(1,10),bias_mean,'b',label='Bias')
+plot.plot(range(1,10),var_mean,'r',label='Variance')
+plot.xlabel('Complexity', fontsize='medium')
+plot.ylabel('Error', fontsize='medium')
+plot.title("Bias vs Variance")
+plot.legend()
+plot.show()
 
 
 
