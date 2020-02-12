@@ -1,11 +1,9 @@
 import numpy as np
 import pickle 
 import matplotlib.pyplot as plot
-
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 from sklearn.pipeline import Pipeline
-
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 
@@ -13,7 +11,7 @@ from sklearn.model_selection import train_test_split
 with open('./data.pkl', 'rb') as f:
     data = pickle.load(f)
 
-# print(data)   data stores all the data that is present
+# data stores all the data that is present
 # train stores all the training data available
 # test stores all the testing data available
 
@@ -31,25 +29,29 @@ tempx=[]
 tempy=[]
 
 for i in range (10):
-    tempx.append(x_train[k:k+9])
-    tempy.append(y_train[k:k+9])
-    k+=9
+    tempx.append(x_train[k:k+450])
+    tempy.append(y_train[k:k+450])
+    k+=450
 
 x_train=np.array(tempx)
 y_train=np.array(tempy)
 
-print(x_train)
-
-for degree in range (1,9):  #For the polynomial degrees
-    for i in range (10):    #For the training set
+#For the polynomial degrees
+for degree in range (1,10):  
+    poly = PolynomialFeatures(degree=degree)
+    #Transform the pilynomial features as required
+    X = poly.fit_transform(x_train[i])
+    #For the training set
+    for i in range (10):    
         reg = LinearRegression()
-        reg.fit(x_train[i], y_train[i])
-        plot.scatter(x_train[i], y_train[i], color = 'red')
-        plot.plot(x_train[i], reg.predict(x_train[i]), color = 'blue')
-        plot.title('X vs Y (Training set)')
-        plot.xlabel('X-axis')
-        plot.ylabel('Y-axis')
-        plot.show()
+        #Train the model for the chosen training set
+        reg.fit(X, y_train[i])
+    plot.scatter(x_train[i], y_train[i], color = 'red')
+    plot.scatter(x_train[i], reg.predict(X), color = 'blue')
+    plot.title('X vs Y (Training set)')
+    plot.xlabel('X-axis')
+    plot.ylabel('Y-axis')
+    plot.show()
 
 
 
