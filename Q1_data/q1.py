@@ -39,19 +39,20 @@ y_train=np.array(tempy)
 #For the polynomial degrees
 for degree in range (1,10):  
     poly = PolynomialFeatures(degree=degree)
-    #Transform the pilynomial features as required
-    X = poly.fit_transform(x_train[i])
+    
     #For the training set
     for i in range (10):    
+        #Transform the pilynomial features as required
+        X = poly.fit_transform(x_train[i])
         reg = LinearRegression()
         #Train the model for the chosen training set
         reg.fit(X, y_train[i])
-    plot.scatter(x_train[i], y_train[i], color = 'red')
-    plot.scatter(x_train[i], reg.predict(X), color = 'blue')
-    plot.title('X vs Y (Training set)')
-    plot.xlabel('X-axis')
-    plot.ylabel('Y-axis')
-    plot.show()
+        plot.scatter(x_train[i], y_train[i], color = 'red')
+        plot.scatter(x_train[i], reg.predict(X), color = 'blue')
+        plot.title('X vs Y (Training set)')
+        plot.xlabel('X-axis')
+        plot.ylabel('Y-axis')
+        plot.show()
 
 
 
