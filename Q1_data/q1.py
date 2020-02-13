@@ -23,18 +23,9 @@ x=data[:,:-1]
 y=data[:,1]
 
 x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=1/10, random_state=0)
-k=0
-temp=[]
-tempx=[]
-tempy=[]
-
-for i in range (10):
-    tempx.append(x_train[k:k+450])
-    tempy.append(y_train[k:k+450])
-    k+=450
-
-x_train=np.array(tempx)
-y_train=np.array(tempy)
+ 
+x_train=np.array((np.array_split(x_train, 10)))
+y_train=np.array((np.array_split(y_train, 10)))
 
 v_table=np.zeros((10,10))
 b_table=np.zeros((10,10))
@@ -55,6 +46,7 @@ for degree in range (1,20):
         X = poly.fit_transform(x_train[i])
         X_TEST = poly.fit_transform(x_test)
         reg = LinearRegression()
+
         #Train the model for the chosen training set
         reg.fit(X, y_train[i])
         y_predict = reg.predict(X_TEST)
@@ -66,20 +58,17 @@ for degree in range (1,20):
         bias_sq[i]=((np.mean(y_predict) - y_test) ** 2)
         out[i]=y_predict
 
-    # point_mean = np.mean(bias_sq,axis=0)
+    #calculate bias
     point_mean=np.mean(out,axis=0)
     bias_mean[degree-1]=np.mean((point_mean-y_test)**2)
-    # bias_mean[degree-1]=np.mean(point_mean)
-    # point_var_mean = np.mean(var,axis=0)
-    # var_mean[degree-1]=np.mean(point_var_mean)
+
+    #calculate variance
     point_var = np.var(out,axis=0)
-    # print(point_var)
     var_mean[degree-1]=np.mean(point_var)
 
 print("BIAS VALUES : ")
 print(pd.DataFrame(bias_mean))
 
-# var_mean[:]*=100
 print("\nVARIANCE VALUES : ")
 print(pd.DataFrame(var_mean))
 
