@@ -79,7 +79,7 @@ for degree in range (1,20):
 print("BIAS VALUES : ")
 print(pd.DataFrame(bias_mean))
 
-var_mean[:]*=100
+# var_mean[:]*=100
 print("\nVARIANCE VALUES : ")
 print(pd.DataFrame(var_mean))
 
