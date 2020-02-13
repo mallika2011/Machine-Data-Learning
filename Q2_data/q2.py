@@ -43,10 +43,10 @@ for degree in range (1,10):
         #Train the model for the chosen training set
         reg.fit(X, y_train[i])
         y_predict = reg.predict(X_TEST)
-        # if(i==1):
-            # plot.scatter(x_train[i], y_train[i], color = 'red')
-            # plot.scatter(x_train[i], reg.predict(X), color = 'blue')
-            # plot.show()
+        if(i==1):
+            plot.scatter(x_train[i], y_train[i], color = 'red')
+            plot.scatter(x_train[i], reg.predict(X), color = 'blue')
+            plot.show()
         bias_sq[i]=((np.mean(y_predict) - Fox_test) ** 2)
         out[i]=y_predict
     
