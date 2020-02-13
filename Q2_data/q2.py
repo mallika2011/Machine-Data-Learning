@@ -51,8 +51,9 @@ for degree in range (1,10):
         out[i]=y_predict
         # arr.append(y_predict)
     
-    point_mean = np.mean(bias_sq,axis=0)
-    bias_mean[degree-1]=np.mean(point_mean)
+    point_mean = np.mean(out,axis=0)
+    # bias_mean[degree-1]=np.mean(point_mean)
+    bias_mean[degree-1]=np.mean((point_mean-Fox_test)**2)
     # point_var_mean = np.mean(var,axis=0)
     # var_mean[degree-1]=np.mean(point_var_mean)
     point_var = np.var(out,axis=0)
@@ -62,15 +63,15 @@ for degree in range (1,10):
 # bias_final=np.array(bias_final)
 # var_final=np.array(var_final)
 
-# print(pd.DataFrame(var_final))
-# print(pd.DataFrame(bias_final))
+print(pd.DataFrame(var_mean))
+print(pd.DataFrame(bias_mean))
 
 # print(var_final)
-print(bias_mean)
+# print(bias_mean)
 
 # bias_mean[:]-=6653086
 plot.plot(bias_mean,'b',label='Bias^2')
-# plot.plot(var_mean,'r',label='Variance')
+plot.plot(var_mean,'r',label='Variance')
 plot.xlabel('Complexity', fontsize='medium')
 plot.ylabel('Error', fontsize='medium')
 plot.title("Bias vs Variance")
