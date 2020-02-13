@@ -30,11 +30,11 @@ y_train=np.array((np.array_split(y_train, 10)))
 v_table=np.zeros((10,10))
 b_table=np.zeros((10,10))
 
-bias_mean=np.zeros((19))
-var_mean=np.zeros((19))
+bias_mean=np.zeros((9))
+var_mean=np.zeros((9))
 
 #For the polynomial degrees
-for degree in range (1,20):  
+for degree in range (1,10):  
     bias_sq=np.zeros((10,500))
     var=np.zeros((10,500))
     out=np.zeros((10,500))
