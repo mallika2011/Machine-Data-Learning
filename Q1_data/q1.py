@@ -6,7 +6,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
-import pandas as pd
+# import pandas as pd
 
 
 with open('./data.pkl', 'rb') as f:
@@ -23,7 +23,7 @@ x=data[:,:-1]
 y=data[:,1]
 
 x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=1/10, random_state=0)
-
+print(x_train.shape)
 k=0
 temp=[]
 tempx=[]
@@ -36,12 +36,7 @@ for i in range (10):
 
 x_train=np.array(tempx)
 y_train=np.array(tempy)
-
-def func(x):
-    x = x.ravel()
-
-    return np.exp(-x ** 2) + 1.5 * np.exp(-(x - 2) ** 2)
-
+# print(x_train.shape)
 
 v_table=np.zeros((10,10))
 b_table=np.zeros((10,10))
@@ -77,7 +72,7 @@ for degree in range (1,10):
     # point_var_mean = np.mean(var,axis=0)
     # var_mean[degree-1]=np.mean(point_var_mean)
     point_var = np.var(out,axis=0)
-    print(point_var)
+    # print(point_var)
     var_mean[degree-1]=np.mean(point_var)
 
 # print(pd.DataFrame(var_mean))
