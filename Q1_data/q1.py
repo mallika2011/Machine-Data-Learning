@@ -69,12 +69,13 @@ for degree in range (1,10):
 print("BIAS VALUES : ")
 print(pd.DataFrame(bias_mean))
 
+var_mean[:]*=100
 print("\nVARIANCE VALUES : ")
 print(pd.DataFrame(var_mean))
 
 
 plot.plot(bias_mean,label='Bias^2', color = 'blue')
-plot.plot(var_mean,label='Variance', color = 'red')
+plot.plot(var_mean,label='Variance * 100', color = 'red')
 plot.xlabel('Model Complexity', fontsize='medium')
 plot.ylabel('Error', fontsize='medium')
 plot.title("Bias vs Variance")

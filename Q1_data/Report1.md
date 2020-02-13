@@ -74,6 +74,11 @@ The entire data is then split as 90% training data and 10% testing data. Witihin
 ![9](Images/9.png)
 
 
+## Bias Variance Tradeoff 
+
+### bv
+![1](Images/bvplot.png)
+
 ## Observations
 From the above graphs and tabulated values, we observe that with an increase in the complexity of the model the bias increases and variance decreases. 
 
