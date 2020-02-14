@@ -16,6 +16,10 @@ Variance is the variability of the model prediction for a given data point. It i
 ### Formula
 ![1](Images/variance.png)
 
+>## Bull's Eye Graphs for the same 
+![1](Images/bullseye.png)
+
+
 ## Brief Algorithm
 
 All the 4 data files are loaded using pickle.load() :  namely Fox_test, x_test, y_train, x_train
@@ -26,7 +30,7 @@ All the 4 data files are loaded using pickle.load() :  namely Fox_test, x_test, 
 
 ```py
     poly = PolynomialFeatures(degree=degree, include_bias=False)
-    #Transform the pilynomial features as required
+    #Transform the polynomial features as required
     X = poly.fit_transform(x_train[i])
     X_TEST = poly.fit_transform(x_test)
     reg = LinearRegression()
@@ -38,13 +42,33 @@ All the 4 data files are loaded using pickle.load() :  namely Fox_test, x_test, 
 
 * Once the model is trained, a matrix with the prediction of the output values for the X_TEST set are obrained for each of the 20 training data set partitions.
 
-* For Bias : the mean value of the predictions for each data point from all the 10 training data partitions is calculated. Then the Bias formula is used to compute the bias for that particular complexity model ... insert formula
+* For Bias : the mean value of the predictions for each data point from all the 20 training data partitions is calculated. Then the Bias formula is used to compute the bias for that particular complexity model ... insert formula
+
+In the code snippet given below, the out matrix is a 20 x 500 matrix containing all the predicted y values for the 20 models. 
+Point mean is then a 1 x 500 matrix that calculates the mean of the bias for each point. 
+
+Finally bias_mean[degree-1] computes the bias for that particular degree complexity model.
+
+```py
+    #calculate bias
+    point_mean=np.mean(out,axis=0)
+    bias_mean[degree-1]=np.mean((point_mean-y_test)**2)
+```
 
 * For variance : Likewise, the variance of the points in all the partitions for that model is computed and then the mean of the variances is calculated for that particular complexity model.
 
-* Once all the 10 subsets of the training set are trained and examined for that particular complexity model, then 
+In the code snippet given below, the out matrix is a 20 x 500 matrix containing all the predicted y values for the 20 models. 
+Point var is then a 1 x 500 matrix that calculates the var of each point. 
 
-* The same procedure is now repeated for models of different complexities (ranging from degree 1 to degree 9). The corresponding values of Bias and Variance for each model are then tabulated. 
+Finally var_mean[degree-1] computes the mean of the variance for that particular degree complexity model.
+
+```py
+    #calculate variance
+    point_var = np.var(out,axis=0)
+    var_mean[degree-1]=np.mean(point_var) 
+```
+
+* The same procedure is now repeated for models of different complexities (ranging from degree 1 to degree 9). The corresponding values of Bias and Variance for each model are then tabulated.
 
 ## Tabulated Values
 
@@ -74,14 +98,13 @@ All the 4 data files are loaded using pickle.load() :  namely Fox_test, x_test, 
 
 ## Bias-Variance Trade-Off Plot obtained
 
-### bvplot
 ![1](Images/bvplot.png)
 
 
 ## Observations
-From the above graphs and tabulated values, we observe that with an increase in the complexity of the model the bias increases and variance decreases. 
+From the above graphs and tabulated values, we observe that with an increase in the complexity of the model the bias decreases and variance increases. 
 
-* Overfitting : 
+* Overfitting :
 The phenomenon of memorization can cause overfitting.  
 That is with increase in the number of features, or complexity/flexibility of the model (essentially increasing the degree of the model to best fit the training data) the model extracts more information from the training sets and works well with them. However at the same time it will not help us generalize data and derive patterns from them. Thus the model may perform poorly on data sets that have not been seen before. This is reflected in the increase in variance with increase in complexity. Thus the model is said to be overfitting.
 Higher degree polynomials can usually be overfitting.
