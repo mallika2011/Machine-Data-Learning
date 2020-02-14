@@ -49,7 +49,7 @@ All the 4 data files are loaded using pickle.load() :  namely Fox_test, x_test, 
 ## Tabulated Values
 
 ### Table 
-![1](Images/tableq1.png)
+![1](Images/tableq2.png)
 
 ## Plots obtained for a particular training model
 

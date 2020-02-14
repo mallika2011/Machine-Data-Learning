@@ -66,21 +66,18 @@ for degree in range (1,10):
     point_var = np.var(out,axis=0)
     var_mean[degree-1]=np.mean(point_var)
 
-print("BIAS VALUES : ")
-print(pd.DataFrame(bias_mean))
 
-var_mean[:]*=100
-print("\nVARIANCE VALUES : ")
-print(pd.DataFrame(var_mean))
-
+#printing the tabulated values
+table_bias=pd.DataFrame({'Degree':np.array(range(1,10)),'Bias^2':bias_mean,'Variance': var_mean, 'Variance*100':var_mean[:]*100})
+print(table_bias.to_string(index=False))
 
 plot.plot(bias_mean,label='Bias^2', color = 'blue')
-plot.plot(var_mean,label='Variance * 100', color = 'red')
+plot.plot(var_mean[:]*100,label='Variance * 100', color = 'red')
 plot.xlabel('Model Complexity', fontsize='medium')
 plot.ylabel('Error', fontsize='medium')
 plot.title("Bias vs Variance")
 plot.legend()
-plot.show()
+# plot.show()
 
 
 

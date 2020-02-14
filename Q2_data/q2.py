@@ -57,8 +57,8 @@ for degree in range (1,10):
     var_mean[degree-1]=np.mean(point_var)
 
 
-print(pd.DataFrame(var_mean))
-print(pd.DataFrame(bias_mean))
+table_bias=pd.DataFrame({'Degree':np.array(range(1,10)),'Bias^2':bias_mean,'Variance': var_mean})
+print(table_bias.to_string(index=False))
 
 plot.plot(bias_mean,'b',label='Bias^2')
 plot.plot(var_mean,'r',label='Variance')

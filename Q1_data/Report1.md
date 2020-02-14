@@ -76,7 +76,7 @@ The entire data is then split as 90% training data and 10% testing data. Witihin
 
 ## Bias Variance Tradeoff 
 
-### bv
+### Bias Variance tradeoff with variance = variance * 100
 ![1](Images/bvplot.png)
 
 ## Observations
