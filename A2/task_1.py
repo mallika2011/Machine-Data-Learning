@@ -8,7 +8,7 @@ def check(health1,arrows1,stamina1,health2,arrows2,stamina2,dh,da,ds):
 
 def shoot(h1,a1,s1,h2,a2,s2):
 
-    #no arrows or no health
+    #no arrows or no stamina
     if a1==0 or s1==0:
         return check(h1,a1,s1,h2,a2,s2,0,0,0)
 
@@ -90,7 +90,7 @@ def recharge (h1,a1,s1,h2,a2,s2):
 
     #stamina not 100
     else:
-        if check(h1,a1,s1,h2,a2,s2,0,0,50):
+        if check(h1,a1,s1,h2,a2,s2,0,0,-50): #since stamina increase therefore old-new = -50
             return 0.8
         elif check(h1,a1,s1,h2,a2,s2,0,0,0):
             return 0.2
@@ -123,7 +123,7 @@ happyreward=10
 gamma=0.99
 delta=0.001
 
-actions=3 #shoot,dodge,recharge
+actionsnum=3 #shoot,dodge,recharge
 health=5 #mult by 25
 arrows=4
 stamina=3 #mult by 50
@@ -146,7 +146,7 @@ while(deltacheck>delta):
             for s1 in range(0,stamina):
                 #for each state
 
-                for ac in range(0,actions):
+                for ac in range(0,actionsnum):
                     # for each action
                     temp=penalty[ac]
                     for h2 in range(0,health):
