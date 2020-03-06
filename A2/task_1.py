@@ -120,10 +120,13 @@ def callaction(ac,h1,a1,s1,h2,a2,s2):
         return recharge(h1,a1,s1,h2,a2,s2)
 
 
-penalty=[-20,-20,-20] #step cost
-happyreward=10
-gamma=0.99
-delta=0.001
+# penalty=[-20,-20,-20] #step cost of shoot,dodge, recharge task 1
+# penalty=[-0.25,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_1
+penalty=[-2.5,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_2
+gamma=0.99  #task_1
+# gamma=0.1 #task2_2
+# delta=0.001
+delta = 0.0000000001 #task3
 
 actionsnum=3 #shoot,dodge,recharge
 health=5 #mult by 25
@@ -136,7 +139,7 @@ actions=np.zeros((health,arrows,stamina))
 
 #numpy.copyto(dst, src)
 deltacheck=100000000
-iterations = 0
+iterations = -1
 
 while(deltacheck>delta):
     # print("old utilities \n",utilities)
@@ -180,15 +183,12 @@ while(deltacheck>delta):
                     deltacheck=abs(temparray[h1,a1,s1]-utilities[h1,a1,s1])
 
     np.copyto(utilities, temparray)
-    # print("deltacheck = ",deltacheck)
-    # print("utilities \n",utilities)
-    # print("\n\n")
     iterations+=1
+    print("iteration="+str(iterations))
+    u=np.around(utilities,3)
+    for h1 in range(0,health):
+        for a1 in range(0,arrows):
+            for s1 in range(0,stamina):
+                print("("+str(h1)+","+str(a1)+","+str(s1)+"):"+mapactions(actions[h1,a1,s1])+"=["+str(u[h1,a1,s1])+"]")
+    print("\n")
 
-utilities=np.around(utilities,3)
-for h1 in range(0,health):
-    for a1 in range(0,arrows):
-        for s1 in range(0,stamina):
-            print("("+str(h1)+","+str(a1)+","+str(s1)+"):"+mapactions(actions[h1,a1,s1])+"=["+str(utilities[h1,a1,s1])+"]")
-
-# print("\n\nIterations = ", iterations)
