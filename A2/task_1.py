@@ -100,11 +100,13 @@ def recharge (h1,a1,s1,h2,a2,s2):
 
 def mapactions(ac):
     if ac==0:
-        return "shoot"
+        return "SHOOT"
     elif ac==1:
-        return "dodge"
+        return "DODGE"
     elif ac==2:
-        return "recharge"
+        return "RECHARGE"
+    else:
+        return "-1"
 
 def callaction(ac,h1,a1,s1,h2,a2,s2):
 
@@ -128,37 +130,65 @@ health=5 #mult by 25
 arrows=4
 stamina=3 #mult by 50
 
-states=np.zeros((health,arrows,stamina))
+utilities=np.zeros((health,arrows,stamina))
 actions=np.zeros((health,arrows,stamina))
+
 
 #numpy.copyto(dst, src)
 deltacheck=100000000
+iterations = 0
 
 while(deltacheck>delta):
+    # print("old utilities \n",utilities)
 
     temparray=np.zeros((health,arrows,stamina))
-    temparray[:]=-100000000
-    deltacheck=-100000000
+    temparray[:]=-10000000000
+    temparray[0,:,:]=0
+    deltacheck=-10000000000
     actions[:]=-1
 
-    for h1 in range(0,health):
+    for h1 in range(1,health):
         for a1 in range(0,arrows):
             for s1 in range(0,stamina):
                 #for each state
 
                 for ac in range(0,actionsnum):
                     # for each action
-                    temp=penalty[ac]
+
+                    #conditions for skipping actions
+                    if (a1==0 and ac==0) or (s1==0 and ac==0) or (s1==0 and ac==1):
+                        continue
+
+                    temp=0
                     for h2 in range(0,health):
                         for a2 in range(0,arrows):
                             for s2 in range(0,stamina):
-                                temp+=callaction(ac,h1,a1,s1,h2,a2,s2)*states[h2,a2,s2]
+                                reward=penalty[ac]
+
+                                #reward for going to a terminal state
+                                if(h2==0):
+                                    reward+=10
+
+                                temp+=callaction(ac,h1*25,a1,s1*50,h2*25,a2,s2*50)*(reward+gamma*utilities[h2,a2,s2])
 
                     if(temp>temparray[h1,a1,s1]):
                         temparray[h1,a1,s1]=temp
+                        actions[h1,a1,s1]=ac
 
-                if(abs(temparray[h1,a1,s1]-states[h1,a1,s1])>deltacheck):
-                    deltacheck=abs(temparray[h1,a1,s1]-states[h1,a1,s1])
-                    actions[h1,a1,s1]=ac
 
-    np.copyto(states, temparray)
+                if(abs(temparray[h1,a1,s1]-utilities[h1,a1,s1])>deltacheck):
+                    deltacheck=abs(temparray[h1,a1,s1]-utilities[h1,a1,s1])
+
+    np.copyto(utilities, temparray)
+    # print("deltacheck = ",deltacheck)
+    # print("utilities \n",utilities)
+    # print("\n\n")
+    iterations+=1
+
+utilities=np.around(utilities,3)
+for h1 in range(0,health):
+    for a1 in range(0,arrows):
+        for s1 in range(0,stamina):
+            print("("+str(h1)+","+str(a1)+","+str(s1)+"):"+mapactions(actions[h1,a1,s1])+"=["+str(utilities[h1,a1,s1])+"]")
+
+# print("\n\nIterations = ", iterations)
