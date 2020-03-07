@@ -105,8 +105,10 @@ def mapactions(ac):
         return "DODGE"
     elif ac==2:
         return "RECHARGE"
-    else:
+    elif ac==-1:
         return "-1"
+    else:
+        return "ERROR"
 
 def callaction(ac,h1,a1,s1,h2,a2,s2):
 
@@ -120,8 +122,8 @@ def callaction(ac,h1,a1,s1,h2,a2,s2):
         return recharge(h1,a1,s1,h2,a2,s2)
 
 
-# penalty=[-20,-20,-20] #step cost of shoot,dodge, recharge task 1
-penalty=[-0.25,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_1
+penalty=[-20,-20,-20] #step cost of shoot,dodge, recharge task 1
+# penalty=[-0.25,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_1
 # penalty=[-2.5,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_2
 gamma=0.99  #task_1
 # gamma=0.1 #task2_2
@@ -144,9 +146,9 @@ iterations = -1
 while(deltacheck>delta):
 
     temparray=np.zeros((health,arrows,stamina))
-    temparray[:]=-10000000000000000
+    temparray[:]=-10000000000000
     temparray[0,:,:]=0
-    deltacheck=-10000000000
+    deltacheck=-1000000000000
     # actions[:]=-1
 
     #updating the utilities
@@ -172,9 +174,10 @@ while(deltacheck>delta):
                                 if(h2==0):
                                     reward+=10
 
-                                temp+=round(callaction(ac,h1*25,a1,s1*50,h2*25,a2,s2*50),3)*(reward+gamma*utilities[h2,a2,s2])
-                             
-                    if(temp>temparray[h1,a1,s1]):
+                                temp+=round(round(callaction(ac,h1*25,a1,s1*50,h2*25,a2,s2*50),3)*(reward+gamma*utilities[h2,a2,s2]),11)
+
+                    temp=round(temp,11)         
+                    if(temp>=temparray[h1,a1,s1]):
                         temparray[h1,a1,s1]=temp
                         # actions[h1,a1,s1]=ac
 
@@ -184,9 +187,11 @@ while(deltacheck>delta):
     np.copyto(utilities, temparray)
     #now the utilities have been set
 
-    
-    actions[:]=-10000000000
+    tempactions=np.zeros((health,arrows,stamina))
+    actions[:]=-1000000000000
+    tempactions[:]=-1000000000000
     actions[0,:,:]=-1
+    tempactions[0,:,:]=-1
 
     for h1 in range(1,health):
         for a1 in range(0,arrows):
@@ -210,11 +215,11 @@ while(deltacheck>delta):
                                 if(h2==0):
                                     reward+=10
 
-                                temp+=callaction(ac,h1*25,a1,s1*50,h2*25,a2,s2*50)*(reward+gamma*utilities[h2,a2,s2])
+                                temp+=round(round(callaction(ac,h1*25,a1,s1*50,h2*25,a2,s2*50),3)*(reward+gamma*utilities[h2,a2,s2]),11)
 
-                    if(temp>actions[h1,a1,s1]):
+                    if(temp>=tempactions[h1,a1,s1]):
                         actions[h1,a1,s1]=ac
-
+                        tempactions[h1,a1,s1]=temp
 
                 # if(abs(temparray[h1,a1,s1]-utilities[h1,a1,s1])>deltacheck):
                 #     deltacheck=abs(temparray[h1,a1,s1]-utilities[h1,a1,s1])
@@ -226,6 +231,9 @@ while(deltacheck>delta):
     for h1 in range(0,health):
         for a1 in range(0,arrows):
             for s1 in range(0,stamina):
-                print("("+str(h1)+","+str(a1)+","+str(s1)+"):"+mapactions(actions[h1,a1,s1])+"=["+str(u[h1,a1,s1])+"]")
+                if u[h1,a1,s1]==0:
+                    print("("+str(h1)+","+str(a1)+","+str(s1)+"):"+mapactions(actions[h1,a1,s1])+"=[0.]")
+                else:
+                    print("("+str(h1)+","+str(a1)+","+str(s1)+"):"+mapactions(actions[h1,a1,s1])+"=["+str(u[h1,a1,s1])+"]")
     print("\n")
 
