@@ -120,8 +120,8 @@ def callaction(ac,h1,a1,s1,h2,a2,s2):
         return recharge(h1,a1,s1,h2,a2,s2)
 
 
-penalty=[-20,-20,-20] #step cost of shoot,dodge, recharge task 1
-# penalty=[-0.25,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_1
+# penalty=[-20,-20,-20] #step cost of shoot,dodge, recharge task 1
+penalty=[-0.25,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_1
 # penalty=[-2.5,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_2
 gamma=0.99  #task_1
 # gamma=0.1 #task2_2
@@ -142,7 +142,6 @@ deltacheck=100000000
 iterations = -1
 
 while(deltacheck>delta):
-    # print("old utilities \n",utilities)
 
     temparray=np.zeros((health,arrows,stamina))
     temparray[:]=-10000000000000000
@@ -172,23 +171,12 @@ while(deltacheck>delta):
                                 #reward for going to a terminal state
                                 if(h2==0):
                                     reward+=10
-                                # if(h1==2 and a1==0 and s1==2):
-                                    # print("rewards  ",reward,h2,a2,s2)
 
                                 temp+=round(callaction(ac,h1*25,a1,s1*50,h2*25,a2,s2*50),3)*(reward+gamma*utilities[h2,a2,s2])
-                                if(h1==1 and a1==0 and s1==2):
-                                    print("\tcallactions",round(callaction(ac,h1*25,a1,s1*50,h2*25,a2,s2*50),3))
-                                    print("\treward", reward)
-                                    print("\tjustutilities",utilities[h2,a2,s2])
-                                    print("\tutmultgamma",gamma*utilities[h2,a2,s2])
-                                    print("\treward+utmultgamma",(reward+gamma*utilities[h2,a2,s2]))
-                                    print("\ttemp  ",round(callaction(ac,h1*25,a1,s1*50,h2*25,a2,s2*50),3)*(reward+gamma*utilities[h2,a2,s2]),h2,a2,s2)
-                                    print()
-                    print("state",h1,a1,s1,mapactions(ac),temp)
+                             
                     if(temp>temparray[h1,a1,s1]):
                         temparray[h1,a1,s1]=temp
                         # actions[h1,a1,s1]=ac
-                print()
 
                 if(abs(temparray[h1,a1,s1]-utilities[h1,a1,s1])>deltacheck):
                     deltacheck=abs(temparray[h1,a1,s1]-utilities[h1,a1,s1])
