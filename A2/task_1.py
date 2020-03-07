@@ -274,7 +274,7 @@ sys.stdout = original
 
 #Task 2 - Part 3 :
 penalty=[-2.5,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_2
-gamma=0.99 
+gamma=0.1
 delta = 0.0000000001 
 
 

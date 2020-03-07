@@ -82,7 +82,7 @@ From the task_2_part_2_trace.txt file obtained we can make the following inferen
 
 > Delta      : 0.0000000001
 
-> Iterations : 235
+> Iterations : 11
 
 From the task_2_part_2_trace.txt file obtained we can make the following inferences about the policy :
 
