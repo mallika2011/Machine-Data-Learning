@@ -1,4 +1,6 @@
 import numpy as np
+import os
+import sys
 
 def check(health1,arrows1,stamina1,health2,arrows2,stamina2,dh,da,ds):
     if (dh==health1-health2) and (da==arrows1-arrows2) and (ds==stamina1-stamina2):
@@ -122,118 +124,161 @@ def callaction(ac,h1,a1,s1,h2,a2,s2):
         return recharge(h1,a1,s1,h2,a2,s2)
 
 
+# penalty=[-20,-20,-20] #step cost of shoot,dodge, recharge task 1
+# # penalty=[-0.25,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_1
+# # penalty=[-2.5,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_2
+# gamma=0.99  #task_1
+# # gamma=0.1 #task2_2
+# delta=0.001
+# # delta = 0.0000000001 #task3
+
+
+def vi():
+    actionsnum=3 #shoot,dodge,recharge
+    health=5 #mult by 25
+    arrows=4
+    stamina=3 #mult by 50
+
+    utilities=np.zeros((health,arrows,stamina))
+    actions=np.zeros((health,arrows,stamina))
+
+
+    #numpy.copyto(dst, src)
+    deltacheck=100000000
+    iterations = -1
+
+    while(deltacheck>delta):
+
+        temparray=np.zeros((health,arrows,stamina))
+        temparray[:]=-10000000000000
+        temparray[0,:,:]=0
+        deltacheck=-1000000000000
+        # actions[:]=-1
+
+        #updating the utilities
+        for h1 in range(1,health):
+            for a1 in range(0,arrows):
+                for s1 in range(0,stamina):
+                    #for each state
+
+                    for ac in range(0,actionsnum):
+                        # for each action
+
+                        #conditions for skipping actions
+                        if (a1==0 and ac==0) or (s1==0 and ac==0) or (s1==0 and ac==1):
+                            continue
+
+                        temp=0
+                        for h2 in range(0,health):
+                            for a2 in range(0,arrows):
+                                for s2 in range(0,stamina):
+                                    reward=penalty[ac]
+
+                                    #reward for going to a terminal state
+                                    if(h2==0):
+                                        reward+=10
+
+                                    temp+=round(round(callaction(ac,h1*25,a1,s1*50,h2*25,a2,s2*50),3)*(reward+gamma*utilities[h2,a2,s2]),11)
+
+                        temp=round(temp,11)         
+                        if(temp>=temparray[h1,a1,s1]):
+                            temparray[h1,a1,s1]=temp
+                            # actions[h1,a1,s1]=ac
+
+                    if(abs(temparray[h1,a1,s1]-utilities[h1,a1,s1])>deltacheck):
+                        deltacheck=abs(temparray[h1,a1,s1]-utilities[h1,a1,s1])
+
+        np.copyto(utilities, temparray)
+        #now the utilities have been set
+
+        tempactions=np.zeros((health,arrows,stamina))
+        actions[:]=-1000000000000
+        tempactions[:]=-1000000000000
+        actions[0,:,:]=-1
+        tempactions[0,:,:]=-1
+
+        for h1 in range(1,health):
+            for a1 in range(0,arrows):
+                for s1 in range(0,stamina):
+                    #for each state
+
+                    for ac in range(0,actionsnum):
+                        # for each action
+
+                        #conditions for skipping actions
+                        if (a1==0 and ac==0) or (s1==0 and ac==0) or (s1==0 and ac==1):
+                            continue
+
+                        temp=0
+                        for h2 in range(0,health):
+                            for a2 in range(0,arrows):
+                                for s2 in range(0,stamina):
+                                    reward=penalty[ac]
+
+                                    #reward for going to a terminal state
+                                    if(h2==0):
+                                        reward+=10
+
+                                    temp+=round(round(callaction(ac,h1*25,a1,s1*50,h2*25,a2,s2*50),3)*(reward+gamma*utilities[h2,a2,s2]),11)
+
+                        if(temp>=tempactions[h1,a1,s1]):
+                            actions[h1,a1,s1]=ac
+                            tempactions[h1,a1,s1]=temp
+
+                    # if(abs(temparray[h1,a1,s1]-utilities[h1,a1,s1])>deltacheck):
+                    #     deltacheck=abs(temparray[h1,a1,s1]-utilities[h1,a1,s1])
+
+        iterations+=1
+        print("iteration="+str(iterations))
+        # u=np.around(utilities,3)
+        u=utilities
+        for h1 in range(0,health):
+            for a1 in range(0,arrows):
+                for s1 in range(0,stamina):
+                    if u[h1,a1,s1]==0:
+                        print("("+str(h1)+","+str(a1)+","+str(s1)+"):"+mapactions(actions[h1,a1,s1])+"=[0.]")
+                    else:
+                        print("("+str(h1)+","+str(a1)+","+str(s1)+"):"+mapactions(actions[h1,a1,s1])+"=["+str(u[h1,a1,s1])+"]")
+        print("\n")
+
+
+original = sys.stdout
+os.mkdir("./lol")
+
+
+#Task 1 :
 penalty=[-20,-20,-20] #step cost of shoot,dodge, recharge task 1
-# penalty=[-0.25,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_1
-# penalty=[-2.5,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_2
-gamma=0.99  #task_1
-# gamma=0.1 #task2_2
+gamma=0.99
 delta=0.001
-# delta = 0.0000000001 #task3
+sys.stdout = open('./lol/task_1_trace.txt', 'w')
+vi()
+sys.stdout = original
 
-actionsnum=3 #shoot,dodge,recharge
-health=5 #mult by 25
-arrows=4
-stamina=3 #mult by 50
+#Task 2 - Part 1 :
+penalty=[-0.25,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_1
+gamma=0.99  
+delta=0.001
 
-utilities=np.zeros((health,arrows,stamina))
-actions=np.zeros((health,arrows,stamina))
+sys.stdout = open('./lol/task_2_part_1_trace.txt', 'w')
+vi()
+sys.stdout = original
+
+#Task 2 - Part 2 :
+penalty=[-2.5,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_2
+gamma=0.1
+delta=0.001
+
+sys.stdout = open('./lol/task_2_part_2_trace.txt', 'w')
+vi()
+sys.stdout = original
+
+#Task 2 - Part 3 :
+penalty=[-2.5,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_2
+gamma=0.99 
+delta = 0.0000000001 
 
 
-#numpy.copyto(dst, src)
-deltacheck=100000000
-iterations = -1
-
-while(deltacheck>delta):
-
-    temparray=np.zeros((health,arrows,stamina))
-    temparray[:]=-10000000000000
-    temparray[0,:,:]=0
-    deltacheck=-1000000000000
-    # actions[:]=-1
-
-    #updating the utilities
-    for h1 in range(1,health):
-        for a1 in range(0,arrows):
-            for s1 in range(0,stamina):
-                #for each state
-
-                for ac in range(0,actionsnum):
-                    # for each action
-
-                    #conditions for skipping actions
-                    if (a1==0 and ac==0) or (s1==0 and ac==0) or (s1==0 and ac==1):
-                        continue
-
-                    temp=0
-                    for h2 in range(0,health):
-                        for a2 in range(0,arrows):
-                            for s2 in range(0,stamina):
-                                reward=penalty[ac]
-
-                                #reward for going to a terminal state
-                                if(h2==0):
-                                    reward+=10
-
-                                temp+=round(round(callaction(ac,h1*25,a1,s1*50,h2*25,a2,s2*50),3)*(reward+gamma*utilities[h2,a2,s2]),11)
-
-                    temp=round(temp,11)         
-                    if(temp>=temparray[h1,a1,s1]):
-                        temparray[h1,a1,s1]=temp
-                        # actions[h1,a1,s1]=ac
-
-                if(abs(temparray[h1,a1,s1]-utilities[h1,a1,s1])>deltacheck):
-                    deltacheck=abs(temparray[h1,a1,s1]-utilities[h1,a1,s1])
-
-    np.copyto(utilities, temparray)
-    #now the utilities have been set
-
-    tempactions=np.zeros((health,arrows,stamina))
-    actions[:]=-1000000000000
-    tempactions[:]=-1000000000000
-    actions[0,:,:]=-1
-    tempactions[0,:,:]=-1
-
-    for h1 in range(1,health):
-        for a1 in range(0,arrows):
-            for s1 in range(0,stamina):
-                #for each state
-
-                for ac in range(0,actionsnum):
-                    # for each action
-
-                    #conditions for skipping actions
-                    if (a1==0 and ac==0) or (s1==0 and ac==0) or (s1==0 and ac==1):
-                        continue
-
-                    temp=0
-                    for h2 in range(0,health):
-                        for a2 in range(0,arrows):
-                            for s2 in range(0,stamina):
-                                reward=penalty[ac]
-
-                                #reward for going to a terminal state
-                                if(h2==0):
-                                    reward+=10
-
-                                temp+=round(round(callaction(ac,h1*25,a1,s1*50,h2*25,a2,s2*50),3)*(reward+gamma*utilities[h2,a2,s2]),11)
-
-                    if(temp>=tempactions[h1,a1,s1]):
-                        actions[h1,a1,s1]=ac
-                        tempactions[h1,a1,s1]=temp
-
-                # if(abs(temparray[h1,a1,s1]-utilities[h1,a1,s1])>deltacheck):
-                #     deltacheck=abs(temparray[h1,a1,s1]-utilities[h1,a1,s1])
-
-    iterations+=1
-    print("iteration="+str(iterations))
-    # u=np.around(utilities,3)
-    u=utilities
-    for h1 in range(0,health):
-        for a1 in range(0,arrows):
-            for s1 in range(0,stamina):
-                if u[h1,a1,s1]==0:
-                    print("("+str(h1)+","+str(a1)+","+str(s1)+"):"+mapactions(actions[h1,a1,s1])+"=[0.]")
-                else:
-                    print("("+str(h1)+","+str(a1)+","+str(s1)+"):"+mapactions(actions[h1,a1,s1])+"=["+str(u[h1,a1,s1])+"]")
-    print("\n")
+sys.stdout = open('./lol/task_2_part_3_trace.txt', 'w')
+vi()
+sys.stdout = original
 
