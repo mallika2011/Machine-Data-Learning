@@ -50,8 +50,8 @@ if __name__ == "__main__":
     to verify that the server is working for your ID.
     """
 
-    err = get_errors('WRybq8qWtunAWYE1dfgRlXZkvsP9oFmMYEeg7q83v7MjSmoht8', list(-np.arange(0,1.1,0.1)))
+    err = get_errors('847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo', list(-np.arange(0,1.1,0.1)))
     assert len(err) == 2
 
-    submit_status = submit('WRybq8qWtunAWYE1dfgRlXZkvsP9oFmMYEeg7q83v7MjSmoht8', list(-np.arange(0,1.1,0.1)))
+    submit_status = submit('847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo', list(-np.arange(0,1.1,0.1)))
     assert "submitted" in submit_status
