@@ -18,13 +18,13 @@ The value iteration algorithm is as follows :-
 
 # TASK 1
 
-> Step Costs : [-20,-20,-20]
+> Step Costs : [-5,-5,-5]
 
 > Gamma      : 0.99
 
 > Delta      : 0.001
 
-> Iterations : 126
+> Iterations : 112
 
 From the task_1_trace.txt file obtained, we can make the following inferences about the policy :
 
@@ -33,8 +33,6 @@ From the task_1_trace.txt file obtained, we can make the following inferences ab
 * Whenever Lero has 0 arrows, he can RECHARGE or DODGE but cannot SHOOT
 
 * Most of the times, Lero is Risk Averse. That is he prefers to RECHARGE than to SHOOT in cases when his stamina = 50 instead of losing an arrow.
-
-*
 
 # TASK 2
 
@@ -46,15 +44,15 @@ From the task_1_trace.txt file obtained, we can make the following inferences ab
 
 > Delta      : 0.001
 
-> Iterations : 99
+> Iterations : 100
 
-From the task_2_part_1_trace.txt file obtained we can make the following inferences about the policy :
+From the task_2_part_1_trace.txt file obtained we can make the following inferences about the changes in the policy :
 
-* Since the step cose for the SHOOT action is less negative compared to the other actions, Lero now becomes Risk Seeking in situations where the Mighty Dragon's health is beatable.
+* Since the step cost for the SHOOT action is less negative compared to the other actions, Lero now becomes Risk Seeking and shoots whenever possible.
 
-* The SHOOT action is taken more number of times as compared to the case when all the 3 actions had the same PENALTY
+* Convergence is faster. In only 100 iterations, the value iteration algorithm converges when compared to the 112 iterations in TASK 1
 
-* Convergence is faster. In only 99 iterations, the value iteration algorithm converges when compared to the 126 iterations in TASK 1
+* Magnitude of the utilities are less negative in this case compared to TASK 1 because of the less negative step cost.
 
 ## PART 2
 
@@ -64,13 +62,15 @@ From the task_2_part_1_trace.txt file obtained we can make the following inferen
 
 > Delta      : 0.001
 
-> Iterations : 4
+> Iterations : 5
 
 From the task_2_part_2_trace.txt file obtained we can make the following inferences about the policy :
 
-* All states converge with a policy in the final iteration with more or less same utilities.
+* All states converge with a policy in the final iteration with more or less same utilities. 
 
 * The RECHARGE policy is preferred over the others hence indicating a Risk Averse behaviour.
+
+* Bellman update is a contraction by a factor of γ on the space of utility vectors. There is fast convergence if we make γ small, but this effectively gives the agent a short horizon and could miss the long-term effects of the agent’s actions. So we can see that, Lero tries to play it safe and keeps RECHARGING instead of looking into the future.
 
 * Due to a very small discount factor (Gamma), the bellman iterations converge fast, within 4 iterations.
 
@@ -78,16 +78,17 @@ From the task_2_part_2_trace.txt file obtained we can make the following inferen
 
 > Step Costs : [-2.5,-2.5,-2.5]
 
-> Gamma      : 0.99
+> Gamma      : 0.1
 
 > Delta      : 0.0000000001
 
-> Iterations : 11
+> Iterations : 12
 
-From the task_2_part_2_trace.txt file obtained we can make the following inferences about the policy :
+From the task_2_part_3_trace.txt file obtained we can make the following inferences about the policy :
 
-* All states converge with a policy in the final iteration with more or less same utilities.
+* The only difference between part 2 and part 3 is delta.
 
-* The RECHARGE policy is preferred over the others hence indicating a Risk Averse behaviour.
+* Since the Bellman error is very small we would require more iterations to get a higher accuracy.
+Clearly the number of iterations in part 3 are greater than the number of iterations in part 2.
 
-* Due to a very small discount factor (Gamma), the bellman iterations converge fast, within 4 iterations.
+* Lero appears to be risk neutral according to the policy obtained.

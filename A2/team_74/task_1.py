@@ -206,7 +206,7 @@ def vi():
                         # for each action
 
                         #conditions for skipping actions
-                        if (a1==0 and ac==0) or (s1==0 and ac==0) or (s1==0 and ac==1):
+                        if (a1==0 and ac==0) or (s1==0 and ac==0) or (s1==0 and ac==1) or (s1==2 and ac==2):
                             continue
 
                         temp=0
@@ -230,27 +230,24 @@ def vi():
 
         iterations+=1
         print("iteration="+str(iterations))
-        # u=np.around(utilities,3)
-        u=utilities
+        u=np.around(utilities,3)
+        # u=utilities
         for h1 in range(0,health):
             for a1 in range(0,arrows):
                 for s1 in range(0,stamina):
-                    if u[h1,a1,s1]==0:
-                        print("("+str(h1)+","+str(a1)+","+str(s1)+"):"+mapactions(actions[h1,a1,s1])+"=[0.]")
-                    else:
-                        print("("+str(h1)+","+str(a1)+","+str(s1)+"):"+mapactions(actions[h1,a1,s1])+"=["+str(u[h1,a1,s1])+"]")
+                    print("("+str(h1)+","+str(a1)+","+str(s1)+"):"+mapactions(actions[h1,a1,s1])+"=["+str(u[h1,a1,s1])+"]")
         print("\n")
 
 
 original = sys.stdout
-os.mkdir("./lol")
+os.mkdir("./outputs")
 
 
 #Task 1 :
-penalty=[-20,-20,-20] #step cost of shoot,dodge, recharge task 1
+penalty=[-5,-5,-5] #step cost of shoot,dodge, recharge task 1
 gamma=0.99
 delta=0.001
-sys.stdout = open('./lol/task_1_trace.txt', 'w')
+sys.stdout = open('./outputs/task_1_trace.txt', 'w')
 vi()
 sys.stdout = original
 
@@ -259,7 +256,7 @@ penalty=[-0.25,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_1
 gamma=0.99  
 delta=0.001
 
-sys.stdout = open('./lol/task_2_part_1_trace.txt', 'w')
+sys.stdout = open('./outputs/task_2_part_1_trace.txt', 'w')
 vi()
 sys.stdout = original
 
@@ -268,7 +265,7 @@ penalty=[-2.5,-2.5,-2.5] #step cost of shoot,dodge, recharge task2_2
 gamma=0.1
 delta=0.001
 
-sys.stdout = open('./lol/task_2_part_2_trace.txt', 'w')
+sys.stdout = open('./outputs/task_2_part_2_trace.txt', 'w')
 vi()
 sys.stdout = original
 
@@ -278,7 +275,7 @@ gamma=0.1
 delta = 0.0000000001 
 
 
-sys.stdout = open('./lol/task_2_part_3_trace.txt', 'w')
+sys.stdout = open('./outputs/task_2_part_3_trace.txt', 'w')
 vi()
 sys.stdout = original
 
