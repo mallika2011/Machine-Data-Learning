@@ -1,10 +1,10 @@
 import numpy as np
 
-MAX_DEG=3 #number of features
-weights=np.array((1,2,3),float)
+MAX_DEG=10 #number of features
+weights=np.array((1,2,2.5,1,3,4,3.5,1,2,3),float)
 
-hi=50
-lo=-50
+hi=5
+lo=-5
 
 x_train=(hi-lo)*np.random.random_sample((3,MAX_DEG))+lo
 y_train=np.sum(weights*x_train,axis=1)
@@ -16,9 +16,9 @@ def get_errors(id,vector):
 
     for i in vector: assert -10<=abs(i)<=10
     assert len(vector) == MAX_DEG
-
     ans=[]
     y_out_train=np.sum(vector*x_train,axis=1)
+
     mse1=np.mean((y_out_train-y_train)*(y_out_train-y_train))
     ans.append(mse1)
 
@@ -28,4 +28,4 @@ def get_errors(id,vector):
 
     return ans
 
-print(get_errors('as',[1,1,3]))
+# print(get_errors('as',[1,1,3]))
