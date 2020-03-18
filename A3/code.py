@@ -1,7 +1,9 @@
 import numpy as np
-import tester as server
+# import tester as server
+import client_moodle as server
 import random
 
+team_name="team_62" #for our reference
 MAX_DEG=11 #number of features
 key='847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo'
 ranger=10
@@ -116,7 +118,8 @@ def main():
         #generate errors for each individual in the population
         print("\n\n\n\n********"+str(i)+"*********")
         for j in range(pop_size):
-            err=server.get_errors('as',population[j])
+            temp=population[j].tolist() #passing a list to the get_errors function
+            err=server.get_errors(key,temp)
             
             #adding the two errors and storing in parenterror
             parenterrors[j]=(err[0]+err[1])
@@ -137,7 +140,7 @@ def main():
         #debug statements
         for j in range(pop_size):
             print("person " + str(j)+" error "+ str(parenterrors[j]))
-            # print("\tvalues"+str(population[j]))
+            print("\tvalues"+str(population[j])+"\n\n")
 
         # Assign probabilities to the population
         parentprobalities=gen_parent_probabilities()
@@ -172,5 +175,5 @@ def main():
     return to_send
 
 to_send=main()
-print(str(to_send)+"\nwas it successfully submitted?", server.submit(key,to_send))
+print(str(to_send)+"\nwas it successfully submitted?", server.submit(key,to_send.tolist()))
 
