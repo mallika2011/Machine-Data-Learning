@@ -2,13 +2,13 @@ import numpy as np
 import tester as server
 import random
 
-MAX_DEG=10 #number of features
+MAX_DEG=11 #number of features
 key='847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo'
 ranger=10
 pc=0.2 
-pop_size=100
-cross_n=50
-iter=10
+pop_size=50
+cross_n=int(pop_size/2)
+iter=20
 
 def mutation(vector,index=-1):
     #chooses a random float in -range to +range and makes change at index position in vector
@@ -77,7 +77,8 @@ def crossover(vector1, vector2, index=-1):
     #   mutate the crossovers
     #   put them into an array called nextgen[]
 
-def gen_parent_probabilities(parentprobalities):
+def gen_parent_probabilities():
+    parentprobalities=np.zeros(pop_size)
     for j in range(pop_size-1):
         parentprobalities[j]=((1-pc)**j)*pc
     #assign last probability
@@ -86,17 +87,18 @@ def gen_parent_probabilities(parentprobalities):
 
 def crossover_select(parentprobalities):
     parents=[]
-    i1=np.random.choice(np.arange(0,pop_size),p=parentprobalities)
-    i2=np.random.choice(np.arange(0,pop_size),p=parentprobalities)
-    parents.append(i1)
-    parents.append(i2)
+    # i1=np.random.choice(np.arange(0,pop_size),p=parentprobalities)
+    # i2=np.random.choice(np.arange(0,pop_size),2 replace=False,p=parentprobalities)
+    # parents.append(i1)
+    # parents.append(i2)
+    parents=np.random.choice(np.arange(0,pop_size),2, replace=False,p=parentprobalities)
     return parents
 
 def main():
+    vector_og=[0.0, 0.1240317450077846, -6.211941063144333, 0.04933903144709126, 0.03810848157715883, 8.132366097133624e-05, -6.018769160916912e-05, -1.251585565299179e-07, 3.484096383229681e-08, 4.1614924993407104e-11, -6.732420176902565e-12]
+    to_send=[-20,-20,-20,-20,-20,-20,-20,-20,-20,-20,-20]
+    min_error=-1
 
-    #TODO:reading the vector from the file
-    # Hardcoding the vector for now
-    vector_og=[2,3,6.1,5.3,9,4.4,7,8,5.7,0.3]
     parenterrors=np.zeros(pop_size)
     parentprobalities=np.zeros(pop_size)
     population=np.zeros((pop_size,MAX_DEG))
@@ -112,6 +114,7 @@ def main():
         new_population=np.zeros((pop_size,MAX_DEG))
 
         #generate errors for each individual in the population
+        print("\n\n\n\n********"+str(i)+"*********")
         for j in range(pop_size):
             err=server.get_errors('as',population[j])
             
@@ -125,8 +128,19 @@ def main():
         parenterrors=parenterrors[parenterrorsinds[::1]]
         population=population[parenterrorsinds[::1]]
         
+
+        #set the send array
+        if(min_error==-1 or min_error>parenterrors[0]):
+            to_send=population[0]
+            min_error=parenterrors[0]
+
+        #debug statements
+        for j in range(pop_size):
+            print("person " + str(j)+" error "+ str(parenterrors[j]))
+            # print("\tvalues"+str(population[j]))
+
         # Assign probabilities to the population
-        gen_parent_probabilities(parentprobalities)
+        parentprobalities=gen_parent_probabilities()
         
         # Checking sum(prob) = 1
         # print(np.sum(parentprobalities))
@@ -151,8 +165,12 @@ def main():
             temp=np.copy(new_population[j])
             new_population[j]=mutation(temp)
 
-        print(new_population)
+        # print(new_population)
         population=np.copy(new_population)
-main()
 
+
+    return to_send
+
+to_send=main()
+print(str(to_send)+"\nwas it successfully submitted?", server.submit(key,to_send))
 
