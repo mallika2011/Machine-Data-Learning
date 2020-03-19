@@ -171,9 +171,11 @@ def main():
         # print(new_population)
         population=np.copy(new_population)
 
-
+    print("-------------------------------------------------------------------------------\n")
+    print("Min error = ", min_error,"\n\n")
     return to_send
 
 to_send=main()
-print(str(to_send)+"\nwas it successfully submitted?", server.submit(key,to_send.tolist()))
-
+print("sending\n\n"+str(to_send)+"\n\nwas it successfully submitted?", server.submit(key,to_send.tolist()))
+print("Code finished")
+print("-------------------------------------------------------------------------------\n\n")
