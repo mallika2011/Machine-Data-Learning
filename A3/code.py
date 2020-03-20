@@ -100,8 +100,12 @@ def main():
     vector_og=[0.0, 0.1240317450077846, -6.211941063144333, 0.04933903144709126, 0.03810848157715883, 8.132366097133624e-05, -6.018769160916912e-05, -1.251585565299179e-07, 3.484096383229681e-08, 4.1614924993407104e-11, -6.732420176902565e-12]
     to_send=[-20,-20,-20,-20,-20,-20,-20,-20,-20,-20,-20]
     min_error=-1
+    min_error1=-1
+    min_error2=-1
 
     parenterrors=np.zeros(pop_size)
+    parenterrors1=np.zeros(pop_size)
+    parenterrors2=np.zeros(pop_size)
     parentprobalities=np.zeros(pop_size)
     population=np.zeros((pop_size,MAX_DEG))
 
@@ -123,12 +127,16 @@ def main():
             
             #adding the two errors and storing in parenterror
             parenterrors[j]=(err[0]+err[1])
+            parenterrors1[j]=(err[0])
+            parenterrors2[j]=(err[1])
 
         # Sort the errors in ascending order
         # Least error => max fittness
         # Correspondingly sort the population also
         parenterrorsinds=parenterrors.argsort()
         parenterrors=parenterrors[parenterrorsinds[::1]]
+        parenterrors1=parenterrors1[parenterrorsinds[::1]]
+        parenterrors2=parenterrors2[parenterrorsinds[::1]]
         population=population[parenterrorsinds[::1]]
         
 
@@ -136,6 +144,8 @@ def main():
         if(min_error==-1 or min_error>parenterrors[0]):
             to_send=population[0]
             min_error=parenterrors[0]
+            min_error1=parenterrors1[0]
+            min_error2=parenterrors2[0]
 
         #debug statements
         for j in range(pop_size):
@@ -173,6 +183,8 @@ def main():
 
     print("-------------------------------------------------------------------------------\n")
     print("Min error = ", min_error,"\n\n")
+    print("Min error1 = ", min_error1,"\n\n")
+    print("Min error2 = ", min_error2,"\n\n")
     return to_send
 
 to_send=main()
