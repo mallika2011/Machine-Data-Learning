@@ -8,9 +8,9 @@ MAX_DEG=11 #number of features
 key='847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo'
 ranger=10
 pc=0.2 
-pop_size=50
+pop_size=100
 cross_n=int(pop_size/2)
-iter=20
+iter=29
 
 def mutation(vector,index=-1):
     #chooses a random float in -range to +range and makes change at index position in vector
