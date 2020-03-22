@@ -1,6 +1,6 @@
 import numpy as np
-import tester as server
-# import client_moodle as server
+# import tester as server
+import client_moodle as server
 import random
 
 team_name="team_62" #for our reference
