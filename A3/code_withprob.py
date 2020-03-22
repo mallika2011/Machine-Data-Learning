@@ -10,9 +10,9 @@ ranger=10
 pc=0.2 
 pop_size=100
 cross_n=int(pop_size/2)
-iter=29
+iter=16
 
-def mutation(vector,index=-1):
+def mutation(vector,index=-1,mut_prob=0.5):
     #chooses a random float in -range to +range and makes change at index position in vector
 
     #if no index is passed chooses a random index
@@ -20,12 +20,18 @@ def mutation(vector,index=-1):
         index=random.randint(0,MAX_DEG-1)
 
     #here probability is 0.5
-    parity=random.randint(0,1)
+    parity= np.random.choice((0,1),p=[1-mut_prob,mut_prob])
     # print("Parity",parity)
     if parity==1:
         vector[index]=random.uniform(-ranger,ranger)
     return vector
 
+def mutateall(vector):
+
+    for i in range(len(vector)):
+        vector=mutation(vector,i,0.3)
+    return vector
+        
 def crossover(vector1, vector2, index=-1):
     #performs a crossover from index onwards
 
@@ -112,7 +118,7 @@ def main():
     # generate the population 
     for i in range(pop_size):
         temp=np.copy(vector_og)
-        population[i]=mutation(temp)
+        population[i]=mutateall(temp)
 
     # have to change this to a while loop with appropriate condition later
     for i in range(iter):
@@ -165,14 +171,33 @@ def main():
             # Two parents chosen based on probabilities => arr[0], arr[1]
             # Sending parents for crossover
             temp=crossover(population[arr[0]],population[arr[1]])
-
+            
+            #select from the two parents and the two children the ones with min val and train error
+            childerror0=server.get_errors(key,temp[0])
+            childerror1=server.get_errors(key,temp[1])
             # new_iter is the iterator for the new_population numpy
-            new_population[new_iter]=temp[0]
-            new_iter+=1
-            new_population[new_iter]=temp[1]
+            min1=min(childerror0[0],childerror1[0],parenterrors1[arr[0]],parenterrors1[arr[1]])
+            min2=min(childerror0[1],childerror1[1],parenterrors2[arr[0]],parenterrors2[arr[1]])
+            
+            if min1==childerror0[0]:
+                new_population[new_iter]=temp[0]
+            elif min1==childerror1[0]:
+                new_population[new_iter]=temp[1]    
+            elif min1==parenterrors1[arr[0]]:
+                new_population[new_iter]=population[arr[0]]
+            elif min1==parenterrors1[arr[1]]:
+                new_population[new_iter]=population[arr[1]]
             new_iter+=1
 
-
+            if min2==childerror0[1]:
+                new_population[new_iter]=temp[0]
+            elif min2==childerror1[1]:
+                new_population[new_iter]=temp[1]    
+            elif min2==parenterrors2[arr[0]]:
+                new_population[new_iter]=population[arr[0]]  
+            elif min2==parenterrors2[arr[1]]:
+                new_population[new_iter]=population[arr[1]] 
+            new_iter+=1
         # Send the new population for mutation
         for j in range(pop_size):
             temp=np.copy(new_population[j])
