@@ -10,7 +10,7 @@ ranger=10
 pc=0.2 
 pop_size=100
 cross_n=int(pop_size/2)
-iter=29
+iter=16
 
 def mutation(vector,index=-1,mut_prob=0.5):
     #chooses a random float in -range to +range and makes change at index position in vector
