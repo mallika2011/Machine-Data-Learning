@@ -173,30 +173,31 @@ def main():
             temp=crossover(population[arr[0]],population[arr[1]])
             
             #select from the two parents and the two children the ones with min val and train error
-            childerror0=server.get_errors(key,temp[0].tolist())
-            childerror1=server.get_errors(key,temp[1].tolist())
+            childerror0=server.get_errors(key,temp[0])
+            childerror1=server.get_errors(key,temp[1])
             # new_iter is the iterator for the new_population numpy
             min1=min(childerror0[0],childerror1[0],parenterrors1[arr[0]],parenterrors1[arr[1]])
             min2=min(childerror0[1],childerror1[1],parenterrors2[arr[0]],parenterrors2[arr[1]])
             
             if min1==childerror0[0]:
-                new_population[new_iter++]=temp[0]
+                new_population[new_iter]=temp[0]
             elif min1==childerror1[0]:
-                new_population[new_iter++]=temp[1]    
+                new_population[new_iter]=temp[1]    
             elif min1==parenterrors1[arr[0]]:
-                new_population[new_iter++]=population[arr[0]  
+                new_population[new_iter]=population[arr[0]]
             elif min1==parenterrors1[arr[1]]:
-                new_population[new_iter++]=population[arr[0]
+                new_population[new_iter]=population[arr[1]]
+            new_iter+=1
 
             if min2==childerror0[1]:
-                new_population[new_iter++]=temp[0]
+                new_population[new_iter]=temp[0]
             elif min2==childerror1[1]:
-                new_population[new_iter++]=temp[1]    
+                new_population[new_iter]=temp[1]    
             elif min2==parenterrors2[arr[0]]:
-                new_population[new_iter++]=population[arr[0]  
+                new_population[new_iter]=population[arr[0]]  
             elif min2==parenterrors2[arr[1]]:
-                new_population[new_iter++]=population[arr[0]
-
+                new_population[new_iter]=population[arr[1]] 
+            new_iter+=1
         # Send the new population for mutation
         for j in range(pop_size):
             temp=np.copy(new_population[j])
