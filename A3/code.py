@@ -12,7 +12,7 @@ pop_size=100
 cross_n=int(pop_size/2)
 iter=29
 
-def mutation(vector,index=-1):
+def mutation(vector,index=-1,mut_prob=0.5):
     #chooses a random float in -range to +range and makes change at index position in vector
 
     #if no index is passed chooses a random index
@@ -20,12 +20,18 @@ def mutation(vector,index=-1):
         index=random.randint(0,MAX_DEG-1)
 
     #here probability is 0.5
-    parity=random.randint(0,1)
+    parity= np.random.choice((0,1),p=[1-mut_prob,mut_prob])
     # print("Parity",parity)
     if parity==1:
         vector[index]=random.uniform(-ranger,ranger)
     return vector
 
+def mutateall(vector):
+
+    for i in range(len(vector)):
+        vector=mutation(vector,i,0.3)
+    return vector
+        
 def crossover(vector1, vector2, index=-1):
     #performs a crossover from index onwards
 
@@ -112,7 +118,7 @@ def main():
     # generate the population 
     for i in range(pop_size):
         temp=np.copy(vector_og)
-        population[i]=mutation(temp)
+        population[i]=mutateall(temp)
 
     # have to change this to a while loop with appropriate condition later
     for i in range(iter):
