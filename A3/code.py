@@ -12,7 +12,7 @@ pop_size=100
 cross_n=int(pop_size/2)
 iter=29
 
-def mutation(vector,index=-1,mut_prob=0.5):
+def mutation(vector,index=-1,mut_prob=0.7):
     #chooses a random float in -range to +range and makes change at index position in vector
 
     #if no index is passed chooses a random index
@@ -63,42 +63,16 @@ def crossover(vector1, vector2, index=-1):
         return send1, send2
 
 
-# how to choose individuals for crossover
-# how to choose the next gen
-
-#flow of the program
-#main
-
-#generate initial genration (mutation) size 100
-
-#while loop
-    #create a utility array that stores the error for every individual in the population
-    #parenterrors[]
-    #get the probability of selection for every parent for going into crossover, this will generate the probaliliites based on the error
-    #above function will return an array: parentprobality
-
-    #for i in range(number of time you want to do crossover):
-    #   pick two parents using numpy.random.choice
-    #   cross them over, now we have two new
-    #   choose between them. how? -> top two? according to probability?
-    #   for now, choose only the children ignore the parents
-    #   mutate the crossovers
-    #   put them into an array called nextgen[]
-
-def gen_parent_probabilities():
-    parentprobalities=np.zeros(pop_size)
-    for j in range(pop_size-1):
+def gen_parent_probabilities(size):
+    parentprobalities=np.zeros(size)
+    for j in range(size-1):
         parentprobalities[j]=((1-pc)**j)*pc
     #assign last probability
-    parentprobalities[pop_size-1]=((1-pc)**(pop_size-1))
+    parentprobalities[size-1]=((1-pc)**(pop_size-1))
     return parentprobalities
 
 def crossover_select(parentprobalities):
     parents=[]
-    # i1=np.random.choice(np.arange(0,pop_size),p=parentprobalities)
-    # i2=np.random.choice(np.arange(0,pop_size),2 replace=False,p=parentprobalities)
-    # parents.append(i1)
-    # parents.append(i2)
     parents=np.random.choice(np.arange(0,pop_size),2, replace=False,p=parentprobalities)
     return parents
 
@@ -120,21 +94,22 @@ def main():
         temp=np.copy(vector_og)
         population[i]=mutateall(temp)
 
+    #generate errors for each individual in the population
+    for j in range(pop_size):
+        temp=population[j].tolist() #passing a list to the get_errors function
+        err=server.get_errors(key,temp)
+        
+        #adding the two errors and storing in parenterror
+        parenterrors[j]=(err[0]+err[1])
+        parenterrors1[j]=(err[0])
+        parenterrors2[j]=(err[1])
+
     # have to change this to a while loop with appropriate condition later
     for i in range(iter):
         new_iter=0
-        new_population=np.zeros((pop_size,MAX_DEG))
 
-        #generate errors for each individual in the population
         print("\n\n\n\n********"+str(i)+"*********")
-        for j in range(pop_size):
-            temp=population[j].tolist() #passing a list to the get_errors function
-            err=server.get_errors(key,temp)
-            
-            #adding the two errors and storing in parenterror
-            parenterrors[j]=(err[0]+err[1])
-            parenterrors1[j]=(err[0])
-            parenterrors2[j]=(err[1])
+
 
         # Sort the errors in ascending order
         # Least error => max fittness
@@ -144,14 +119,7 @@ def main():
         parenterrors1=parenterrors1[parenterrorsinds[::1]]
         parenterrors2=parenterrors2[parenterrorsinds[::1]]
         population=population[parenterrorsinds[::1]]
-        
 
-        #set the send array
-        if(min_error==-1 or min_error>parenterrors[0]):
-            to_send=population[0]
-            min_error=parenterrors[0]
-            min_error1=parenterrors1[0]
-            min_error2=parenterrors2[0]
 
         #debug statements
         for j in range(pop_size):
@@ -159,10 +127,11 @@ def main():
             print("\tvalues"+str(population[j])+"\n\n")
 
         # Assign probabilities to the population
-        parentprobalities=gen_parent_probabilities()
+        parentprobalities=gen_parent_probabilities(pop_size)
         
         # Checking sum(prob) = 1
         # print(np.sum(parentprobalities))
+        child_population=np.zeros((pop_size,MAX_DEG))
 
         #perform crossover cross_n times
         for j in range (cross_n):
@@ -172,39 +141,66 @@ def main():
             # Sending parents for crossover
             temp=crossover(population[arr[0]],population[arr[1]])
             
-            #select from the two parents and the two children the ones with min val and train error
-            childerror0=server.get_errors(key,temp[0])
-            childerror1=server.get_errors(key,temp[1])
-            # new_iter is the iterator for the new_population numpy
-            min1=min(childerror0[0],childerror1[0],parenterrors1[arr[0]],parenterrors1[arr[1]])
-            min2=min(childerror0[1],childerror1[1],parenterrors2[arr[0]],parenterrors2[arr[1]])
-            
-            if min1==childerror0[0]:
-                new_population[new_iter]=temp[0]
-            elif min1==childerror1[0]:
-                new_population[new_iter]=temp[1]    
-            elif min1==parenterrors1[arr[0]]:
-                new_population[new_iter]=population[arr[0]]
-            elif min1==parenterrors1[arr[1]]:
-                new_population[new_iter]=population[arr[1]]
+            child_population[new_iter]=temp[0]
             new_iter+=1
 
-            if min2==childerror0[1]:
-                new_population[new_iter]=temp[0]
-            elif min2==childerror1[1]:
-                new_population[new_iter]=temp[1]    
-            elif min2==parenterrors2[arr[0]]:
-                new_population[new_iter]=population[arr[0]]  
-            elif min2==parenterrors2[arr[1]]:
-                new_population[new_iter]=population[arr[1]] 
+            child_population[new_iter]=temp[1]    
             new_iter+=1
+
         # Send the new population for mutation
         for j in range(pop_size):
-            temp=np.copy(new_population[j])
-            new_population[j]=mutation(temp)
+            temp=np.copy(child_population[j])
+            child_population[j]=mutateall(temp)
 
-        # print(new_population)
-        population=np.copy(new_population)
+        # get the errors for the new population
+        childerrors=np.zeros(pop_size)
+        childerrors1=np.zeros(pop_size)
+        childerrors2=np.zeros(pop_size)
+
+        # generate errors for each child
+        for j in range(pop_size):
+            temp=child_population[j].tolist() #passing a list to the get_errors function
+            err=server.get_errors(key,temp)
+            
+            #adding the two errors and storing in parenterror
+            childerrors[j]=(err[0]+err[1])
+            childerrors1[j]=(err[0])
+            childerrors2[j]=(err[1])
+
+        #combining parents and children into one array
+        candidates=np.concatenate([population,child_population])
+        candidate_errors=np.concatenate([parenterrors,childerrors])
+        candidate_errors1=np.concatenate([parenterrors1,childerrors1])
+        candidate_errors2=np.concatenate([parenterrors2,childerrors2])
+
+        # sorting all the candidates by error
+        candidateerrorsinds=candidate_errors.argsort()
+        candidate_errors=candidate_errors[candidateerrorsinds[::1]]
+        candidate_errors1=candidate_errors1[candidateerrorsinds[::1]]
+        candidate_errors2=candidate_errors2[candidateerrorsinds[::1]]
+        candidates=candidates[candidateerrorsinds[::1]]
+
+        # setting the probability and choosing the indices
+        candidate_prob=gen_parent_probabilities(pop_size*2)
+        chosenindices=np.random.choice(np.arange(0,2*pop_size),pop_size, replace=False,p=candidate_prob)
+
+        # set population for the next iteration 
+        for i in range(pop_size):
+            ind=chosenindices[i]
+            population[i]=candidates[ind]
+            parenterrors[i]=candidate_errors[ind]
+            parenterrors1[i]=candidate_errors1[ind]
+            parenterrors2[i]=candidate_errors2[ind]
+
+        
+        # set the send array by choosing the minimum from all the candidates NOTE: it may not be selected in the new population 
+        if(min_error==-1 or min_error>candidate_errors[0]):
+            to_send=candidates[0]
+            min_error=candidate_errors[0]
+            min_error1=candidate_errors1[0]
+            min_error2=candidate_errors2[0]
+
+        
 
     print("-------------------------------------------------------------------------------\n")
     print("Min error = ", min_error,"\n\n")
