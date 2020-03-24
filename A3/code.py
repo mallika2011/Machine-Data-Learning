@@ -7,12 +7,12 @@ team_name="team_62" #for our reference
 MAX_DEG=11 #number of features
 key='847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo'
 ranger=10
-pc=0.2 
+pc=0.1 
 pop_size=75
 cross_n=int(pop_size/2)
-iter=25
+iter=10
 
-def mutation(vector,index=-1,mut_prob=0.7):
+def mutation(vector,index=-1,mut_prob=0.1):
     #chooses a random float in -range to +range and makes change at index position in vector
 
     #if no index is passed chooses a random index
@@ -29,7 +29,7 @@ def mutation(vector,index=-1,mut_prob=0.7):
 def mutateall(vector):
 
     for i in range(len(vector)):
-        vector=mutation(vector,i,0.7) #TODO: CHANGED HERE
+        vector=mutation(vector,i,0.85) #TODO: CHANGED HERE
     return vector
 
 def crossover(vector1, vector2, index=-1):
@@ -93,7 +93,7 @@ def main():
     # generate the population 
     for i in range(pop_size):
         temp=np.copy(vector_og)
-        population[i]=mutation(temp)
+        population[i]=mutateall(temp)
 
     #generate errors for each individual in the population
     for j in range(pop_size):
@@ -151,7 +151,7 @@ def main():
         # Send the new population for mutation
         for j in range(pop_size):
             temp=np.copy(child_population[j])
-            child_population[j]=mutateall(temp)
+            child_population[j]=mutation(temp)
 
         # get the errors for the new population
         childerrors=np.zeros(pop_size)
