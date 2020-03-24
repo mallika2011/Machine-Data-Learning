@@ -1,6 +1,6 @@
 import numpy as np
-import tester as server
-# import client_moodle as server
+# import tester as server
+import client_moodle as server
 import random
 
 team_name="team_62" #for our reference
@@ -8,11 +8,11 @@ MAX_DEG=11 #number of features
 key='847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo'
 ranger=10
 pc=0.2 
-pop_size=100
+pop_size=20
 cross_n=int(pop_size/2)
-iter=29
+iter=20
 
-def mutation(vector,index=-1,mut_prob=0.5):
+def mutation(vector,index=-1,mut_prob=0.7):
     #chooses a random float in -range to +range and makes change at index position in vector
 
     #if no index is passed chooses a random index
@@ -29,7 +29,7 @@ def mutation(vector,index=-1,mut_prob=0.5):
 def mutateall(vector):
 
     for i in range(len(vector)):
-        vector=mutation(vector,i,0.1)
+        vector=mutation(vector,i,0.7) #TODO: CHANGED HERE
     return vector
 
 def crossover(vector1, vector2, index=-1):
@@ -68,7 +68,7 @@ def gen_parent_probabilities(size):
     for j in range(size-1):
         parentprobalities[j]=((1-pc)**j)*pc
     #assign last probability
-    parentprobalities[size-1]=((1-pc)**(pop_size-1))
+    parentprobalities[size-1]=((1-pc)**(size-1))
     return parentprobalities
 
 def crossover_select(parentprobalities):
@@ -78,6 +78,7 @@ def crossover_select(parentprobalities):
 
 def main():
     vector_og=[0.0, 0.1240317450077846, -6.211941063144333, 0.04933903144709126, 0.03810848157715883, 8.132366097133624e-05, -6.018769160916912e-05, -1.251585565299179e-07, 3.484096383229681e-08, 4.1614924993407104e-11, -6.732420176902565e-12]
+    # vector_og=[-9.78736351e+00 ,-6.30079234e+00 ,-5.86904268e+00 , 4.93390314e-02,3.81084816e-02 , 8.13236610e-05, -6.01876916e-05, -1.25158557e-07,3.48409638e-08,  4.16149250e-11, -6.73242018e-12]
     to_send=[-20,-20,-20,-20,-20,-20,-20,-20,-20,-20,-20]
     min_error=-1
     min_error1=-1
