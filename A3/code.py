@@ -10,7 +10,7 @@ ranger=10
 pc=0.1 
 pop_size=74
 cross_n=int(pop_size/2)
-iter=10
+iter=200
 
 def mutation(vector,index=-1,mut_prob=0.1):
     #chooses a random float in -range to +range and makes change at index position in vector
@@ -148,10 +148,20 @@ def main():
             child_population[new_iter]=temp[1]    
             new_iter+=1
 
+        # print("BEFORE MUTATION: CHILD POPULATION")
+        # for j in range(len(child_population)):
+        #     print("Child", j)
+        #     print(child_population[i])
+
         # Send the new population for mutation
         for j in range(pop_size):
             temp=np.copy(child_population[j])
             child_population[j]=mutation(temp)
+
+        # print("AFTER MUTATION: CHILD POPULATION")
+        # for j in range(len(child_population)):
+        #     print("Child", j)
+        #     print(child_population[i])
 
         # get the errors for the new population
         childerrors=np.zeros(pop_size)
@@ -201,13 +211,10 @@ def main():
             min_error=candidate_errors[0]
             min_error1=candidate_errors1[0]
             min_error2=candidate_errors2[0]
-
-        
-
-    print("-------------------------------------------------------------------------------\n")
-    print("Min error = ", min_error,"\n\n")
-    print("Min error1 = ", min_error1,"\n\n")
-    print("Min error2 = ", min_error2,"\n\n")
+        print("-------------------------------------------------------------------------------\n")
+        print("Min error = ", min_error,"\n\n")
+        print("Min error1 = ", min_error1,"\n\n")
+        print("Min error2 = ", min_error2,"\n\n")
     return to_send
 
 to_send=main()
