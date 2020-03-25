@@ -1,6 +1,6 @@
 import numpy as np
-# import tester as server
-import client_moodle as server
+import tester as server
+# import client_moodle as server
 import random
 
 team_name="team_62" #for our reference
@@ -10,7 +10,7 @@ ranger=10
 pc=0.2 
 pop_size=20
 cross_n=int(pop_size/2)
-iter=20
+iter=50
 
 
 def mutation(vector,index=-1,mut_prob=0.1):
@@ -87,18 +87,11 @@ def crossover_select(parentprobalities):
     parents=np.random.choice(np.arange(0,pop_size),2, replace=False,p=parentprobalities)
     return parents
 
-def sortfunc(arr,arr1,arr2):
-    arrind=arr.argsort()
-    arr=arr[arrind[::1]]
-    arr1=arr1[arrind[::1]]
-    arr2=arr2[arrind[::1]]
-    return arrind
-
 def main():
     print("PC: " ,pc, " POP_SIZE: ",pop_size," ITER : ", iter)
-    
     w1=0.2
     w2=0.8
+
     vector_og=[0.0, 0.1240317450077846, -6.211941063144333, 0.04933903144709126, 0.03810848157715883, 8.132366097133624e-05, -6.018769160916912e-05, -1.251585565299179e-07, 3.484096383229681e-08, 4.1614924993407104e-11, -6.732420176902565e-12]
     # vector_og=[-9.78736351e+00 ,-6.30079234e+00 ,-5.86904268e+00 , 4.93390314e-02,3.81084816e-02 , 8.13236610e-05, -6.01876916e-05, -1.25158557e-07,3.48409638e-08,  4.16149250e-11, -6.73242018e-12]
     to_send=[-20,-20,-20,-20,-20,-20,-20,-20,-20,-20,-20]
@@ -140,8 +133,12 @@ def main():
         # Sort the errors in ascending order
         # Least error => max fittness
         # Correspondingly sort the population also
-        arrinds=sortfunc(parenterrors,parenterrors1,parenterrors2)
-        population=population[arrinds[::1]]
+        # arrinds=sortfunc(parenterrors,parenterrors1,parenterrors2)
+        parenerrorsinds=parenterrors.argsort()
+        parenterrors=parenterrors[parenerrorsinds[::1]]
+        parenterrors1=parenterrors1[parenerrorsinds[::1]]
+        parenterrors2=parenterrors2[parenerrorsinds[::1]]
+        population=population[parenerrorsinds[::1]]
 
         #debug statements
         for j in range(pop_size):
@@ -196,8 +193,12 @@ def main():
         candidate_errors2=np.concatenate([parenterrors2,childerrors2])
 
         # sorting all the candidates by error
-        arrinds=sortfunc(candidate_errors,candidate_errors1, candidate_errors2)
-        candidates=candidates[arrinds[::1]]
+        # arrinds=sortfunc(candidate_errors,candidate_errors1, candidate_errors2)
+        candidate_errors_inds=candidate_errors.argsort()
+        candidate_errors=candidate_errors[candidate_errors_inds[::1]]
+        candidate_errors1=candidate_errors1[candidate_errors_inds[::1]]
+        candidate_errors2=candidate_errors2[candidate_errors_inds[::1]]
+        candidates=candidates[candidate_errors_inds[::1]]
 
         # set population for the next iteration by selecting the best k in the candidaes
         for i in range(pop_size):
