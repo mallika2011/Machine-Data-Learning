@@ -1,6 +1,6 @@
 import numpy as np
-# import tester as server
-import client_moodle as server
+import tester as server
+# import client_moodle as server
 import random
 
 team_name="team_62" #for our reference
@@ -8,7 +8,7 @@ MAX_DEG=11 #number of features
 key='847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo'
 ranger=10
 pc=0.1 
-pop_size=75
+pop_size=74
 cross_n=int(pop_size/2)
 iter=10
 
@@ -29,7 +29,7 @@ def mutation(vector,index=-1,mut_prob=0.1):
 def mutateall(vector):
 
     for i in range(len(vector)):
-        vector=mutation(vector,i,0.85) #TODO: CHANGED HERE
+        vector=mutation(vector,i,0.1)
     return vector
 
 def crossover(vector1, vector2, index=-1):
@@ -182,12 +182,13 @@ def main():
         candidates=candidates[candidateerrorsinds[::1]]
 
         # setting the probability and choosing the indices
-        candidate_prob=gen_parent_probabilities(pop_size*2)
-        chosenindices=np.random.choice(np.arange(0,2*pop_size),pop_size, replace=False,p=candidate_prob)
+        # candidate_prob=gen_parent_probabilities(pop_size*2)
+        # chosenindices=np.random.choice(np.arange(0,2*pop_size),pop_size, replace=False,p=candidate_prob)
 
         # set population for the next iteration 
         for i in range(pop_size):
-            ind=chosenindices[i]
+            # ind=chosenindices[i]
+            ind=i
             population[i]=candidates[ind]
             parenterrors[i]=candidate_errors[ind]
             parenterrors1[i]=candidate_errors1[ind]
