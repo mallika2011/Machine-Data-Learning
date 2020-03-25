@@ -1,6 +1,6 @@
 import numpy as np
-import tester as server
-# import client_moodle as server
+# import tester as server
+import client_moodle as server
 import random
 
 team_name="team_62" #for our reference
@@ -258,7 +258,7 @@ def main():
         print("Min error1 = ", min_error1,"\n\n")
         print("Min error2 = ", min_error2,"\n\n")
 
-        if(min_error<40000000)
+        if(min_error<40000000):
             print("sending\n\n"+str(to_send)+"\n\nwas it successfully submitted?", server.submit(key,to_send.tolist()))
             
     return to_send
