@@ -10,7 +10,7 @@ ranger=10
 pc=0.1 
 pop_size=74
 cross_n=int(pop_size/2)
-iter=200
+iter=50
 
 def mutation(vector,index=-1,mut_prob=0.1):
     #chooses a random float in -range to +range and makes change at index position in vector
@@ -29,7 +29,7 @@ def mutation(vector,index=-1,mut_prob=0.1):
 def mutateall(vector):
 
     for i in range(len(vector)):
-        vector=mutation(vector,i,0.1)
+        vector=mutation(vector,i,0.85)
     return vector
 
 def crossover(vector1, vector2, index=-1):
@@ -76,6 +76,15 @@ def crossover_select(parentprobalities):
     parents=np.random.choice(np.arange(0,pop_size),2, replace=False,p=parentprobalities)
     return parents
 
+def check_match(vector1,vector2):
+    #return 1 if match
+
+    for i in range(MAX_DEG):
+        if (abs(vector1[i]-vector2[i])>0.000001):
+            return 0
+        
+    return 1
+
 def main():
     vector_og=[0.0, 0.1240317450077846, -6.211941063144333, 0.04933903144709126, 0.03810848157715883, 8.132366097133624e-05, -6.018769160916912e-05, -1.251585565299179e-07, 3.484096383229681e-08, 4.1614924993407104e-11, -6.732420176902565e-12]
     # vector_og=[-9.78736351e+00 ,-6.30079234e+00 ,-5.86904268e+00 , 4.93390314e-02,3.81084816e-02 , 8.13236610e-05, -6.01876916e-05, -1.25158557e-07,3.48409638e-08,  4.16149250e-11, -6.73242018e-12]
@@ -105,11 +114,16 @@ def main():
         parenterrors1[j]=(err[0])
         parenterrors2[j]=(err[1])
 
+    bank=np.copy(population)
+    bankerrors=np.copy(parenterrors)
+    bankerrors1=np.copy(parenterrors1)
+    bankerrors2=np.copy(parenterrors2)
+
     # have to change this to a while loop with appropriate condition later
-    for i in range(iter):
+    for iter_num in range(iter):
         new_iter=0
 
-        print("\n\n\n\n********"+str(i)+"*********")
+        print("\n\n\n\n********"+str(iter_num)+"*********")
 
 
         # Sort the errors in ascending order
@@ -196,15 +210,40 @@ def main():
         # chosenindices=np.random.choice(np.arange(0,2*pop_size),pop_size, replace=False,p=candidate_prob)
 
         # set population for the next iteration 
-        for i in range(pop_size):
-            # ind=chosenindices[i]
-            ind=i
-            population[i]=candidates[ind]
-            parenterrors[i]=candidate_errors[ind]
-            parenterrors1[i]=candidate_errors1[ind]
-            parenterrors2[i]=candidate_errors2[ind]
+        ind=0
 
-        
+        for i in range(2*pop_size):
+            # ind=chosenindices[i]
+            if ind>=pop_size:
+                break
+
+            checkflag=0
+
+            for j in range(ind):
+                # print(i,j,ind)
+                # print(population[i],population[j])
+                if check_match(candidates[i],population[j])==1:
+                    checkflag=1
+                    break
+            
+            if(checkflag==0):
+                population[ind]=candidates[i]
+                parenterrors[ind]=candidate_errors[i]
+                parenterrors1[ind]=candidate_errors1[i]
+                parenterrors2[ind]=candidate_errors2[i]
+                ind+=1  
+
+        if (ind<pop_size):
+            print("choosing from the bank from index "+str(ind))
+            i=0
+            while(ind<pop_size):
+                population[ind]=bank[i]
+                parenterrors[ind]=bankerrors[i]
+                parenterrors1[ind]=bankerrors1[i]
+                parenterrors2[ind]=bankerrors2[i]
+                ind+=1
+                i+=1
+
         # set the send array by choosing the minimum from all the candidates NOTE: it may not be selected in the new population 
         if(min_error==-1 or min_error>candidate_errors[0]):
             to_send=candidates[0]
