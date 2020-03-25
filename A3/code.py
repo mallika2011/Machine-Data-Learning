@@ -190,7 +190,7 @@ def main():
             temp=child_population[j].tolist() #passing a list to the get_errors function
             err=server.get_errors(key,temp)
             
-            #adding the two errors and storing in parenterror
+            #adding the two errors and storing in parnterror
             childerrors[j]=(err[0]+err[1])
             childerrors1[j]=(err[0])
             childerrors2[j]=(err[1])
