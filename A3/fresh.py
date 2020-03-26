@@ -71,7 +71,7 @@ def crossover_select(parentprobalities):
     return parents
 
 def crossover_select2(parenterrors, num):
-    return random.sample(range(pop_size),num)
+    return random.sample(range(num),2)
 
 
 def check_match(vector1, vector2):
@@ -147,10 +147,10 @@ def main():
         while(new_iter < pop_size):
 
             #TODO: WE MAY HAVE TO CHOOSE BETWEEN THESE TWO OPTIONS
-            arr = crossover_select(parentprobalities)
+            # arr = crossover_select(parentprobalities)
             
             #TODO: Select randomly among top k parents  (For now k =10) 
-            # arr = crossover_select2(parenterrors, 10)
+            arr = crossover_select2(parenterrors, 10)
 
             # Sending parents for crossover
             temp = crossover(population[arr[0]], population[arr[1]])
@@ -179,6 +179,14 @@ def main():
             childerrors[j] = (err[0]+err[1])
             childerrors1[j] = (err[0])
             childerrors2[j] = (err[1])
+
+        #Sort children 
+        childinds = childerrors.argsort()
+        childerrors = childerrors[childinds[::1]]
+        childerrors1 = childerrors1[childinds[::1]]
+        childerrors2 = childerrors2[childinds[::1]]
+        child_population = child_population[childinds[::1]]
+
 
         #TODO: Select the best select_sure number of parents and chilren [select these many parents and children for sure]
 
