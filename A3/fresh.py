@@ -10,8 +10,9 @@ ranger = 10
 pc = 0.2
 pop_size = 30
 select_sure = 5
+cross_select_from = 10
 cross_n = int(pop_size/2)
-iter = 100
+iter = 80
 
 
 def mutation(vector, index=-1, mut_prob=0.2):  # TODO: Changed mutate_prob to 0.2
@@ -38,20 +39,31 @@ def mutateall(temp):
     return vector
 
 
+# def crossover(vector1, vector2, index=-1):
+#     send1 = []
+#     send2 = []
+
+#     index = random.randint(0, MAX_DEG-1)
+
+#     for i in range(MAX_DEG):
+#         parity = random.randint(0, 1)
+#         if parity == 1:
+#             send1.append(vector1[i])
+#             send2.append(vector2[i])
+#         else:
+#             send1.append(vector2[i])
+#             send2.append(vector1[i])
+
+#     return mutation(send1), mutation(send2)
 def crossover(vector1, vector2, index=-1):
-    send1 = []
-    send2 = []
+    send1 = vector1.tolist()
+    send2 = vector2.tolist()
 
-    index = random.randint(0, MAX_DEG-1)
+    a = np.random.choice(np.arange(0, 11), 5, replace=False)
 
-    for i in range(MAX_DEG):
-        parity = random.randint(0, 1)
-        if parity == 1:
-            send1.append(vector1[i])
-            send2.append(vector2[i])
-        else:
-            send1.append(vector2[i])
-            send2.append(vector1[i])
+    for i in a.tolist():
+        send1[i] = vector2[i]
+        send2[i] = vector1[i]
 
     return mutation(send1), mutation(send2)
 
@@ -70,8 +82,9 @@ def crossover_select(parentprobalities):
         np.arange(0, pop_size), 2, replace=False, p=parentprobalities)
     return parents
 
+
 def crossover_select2(parenterrors, num):
-    return random.sample(range(num),2)
+    return random.sample(range(num), 2)
 
 
 def check_match(vector1, vector2):
@@ -92,7 +105,6 @@ def main():
 
     vector_og = [0.0, 0.1240317450077846, -6.211941063144333, 0.04933903144709126, 0.03810848157715883, 8.132366097133624e-05, -
                  6.018769160916912e-05, -1.251585565299179e-07, 3.484096383229681e-08, 4.1614924993407104e-11, -6.732420176902565e-12]
-    # vector_og=[-9.78736351e+00 ,-6.30079234e+00 ,-5.86904268e+00 , 4.93390314e-02,3.81084816e-02 , 8.13236610e-05, -6.01876916e-05, -1.25158557e-07,3.48409638e-08,  4.16149250e-11, -6.73242018e-12]
     to_send = [-20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20]
     min_error = -1
     min_error1 = -1
@@ -143,14 +155,14 @@ def main():
 
         child_population = np.zeros((pop_size, MAX_DEG))
         new_iter = 0
-        
+
         while(new_iter < pop_size):
 
-            #TODO: WE MAY HAVE TO CHOOSE BETWEEN THESE TWO OPTIONS
+            # TODO: WE MAY HAVE TO CHOOSE BETWEEN THESE TWO OPTIONS
             # arr = crossover_select(parentprobalities)
-            
-            #TODO: Select randomly among top k parents  (For now k =10) 
-            arr = crossover_select2(parenterrors, 10)
+
+            # TODO: Select randomly among top k parents  (For now k =10)
+            arr = crossover_select2(parenterrors, cross_select_from)
 
             # Sending parents for crossover
             temp = crossover(population[arr[0]], population[arr[1]])
@@ -180,31 +192,31 @@ def main():
             childerrors1[j] = (err[0])
             childerrors2[j] = (err[1])
 
-        #Sort children 
+        # Sort children
         childinds = childerrors.argsort()
         childerrors = childerrors[childinds[::1]]
         childerrors1 = childerrors1[childinds[::1]]
         childerrors2 = childerrors2[childinds[::1]]
         child_population = child_population[childinds[::1]]
+        # TODO: Select the best select_sure number of parents and chilren [select these many parents and children for sure]
 
-
-        #TODO: Select the best select_sure number of parents and chilren [select these many parents and children for sure]
-
-        for j in range (select_sure):
-            #Leaving the parent population untouched
+        for j in range(select_sure):
+            # Leaving the parent population untouched
             population[j+select_sure] = child_population[j]
             parenterrors[j+select_sure] = childerrors[j]
             parenterrors1[j+select_sure] = childerrors1[j]
             parenterrors2[j+select_sure] = childerrors2[j]
 
-        
-
         # combining parents and children into one array
-        #TODO: Concatenating remaining parents and children and selecting from them
-        candidates = np.concatenate([population[select_sure:], child_population[select_sure:]])
-        candidate_errors = np.concatenate([parenterrors[select_sure:], childerrors[select_sure:]])
-        candidate_errors1 = np.concatenate([parenterrors1[select_sure:], childerrors1[select_sure:]])
-        candidate_errors2 = np.concatenate([parenterrors2[select_sure:], childerrors2[select_sure:]])
+        # TODO: Concatenating remaining parents and children and selecting from them
+        candidates = np.concatenate(
+            [population[select_sure:], child_population[select_sure:]])
+        candidate_errors = np.concatenate(
+            [parenterrors[select_sure:], childerrors[select_sure:]])
+        candidate_errors1 = np.concatenate(
+            [parenterrors1[select_sure:], childerrors1[select_sure:]])
+        candidate_errors2 = np.concatenate(
+            [parenterrors2[select_sure:], childerrors2[select_sure:]])
 
         # sorting all the candidates by error
         candidate_errors_inds = candidate_errors.argsort()
@@ -213,7 +225,7 @@ def main():
         candidate_errors2 = candidate_errors2[candidate_errors_inds[::1]]
         candidates = candidates[candidate_errors_inds[::1]]
 
-        #TODO: Select the best popsize - 2*(select_sure)
+        # TODO: Select the best popsize - 2*(select_sure)
         cand_iter = 0
 
         while(cand_iter < pop_size - 2*select_sure):
@@ -221,8 +233,7 @@ def main():
             parenterrors[cand_iter] = candidate_errors[cand_iter]
             parenterrors1[cand_iter] = candidate_errors1[cand_iter]
             parenterrors2[cand_iter] = candidate_errors2[cand_iter]
-            cand_iter+=1
-
+            cand_iter += 1
 
         # set the send array by choosing the minimum from all the candidates NOTE: it may not be selected in the new population
         if(min_error == -1 or min_error > candidate_errors[0]):
@@ -230,9 +241,14 @@ def main():
             min_error = candidate_errors[0]
             min_error1 = candidate_errors1[0]
             min_error2 = candidate_errors2[0]
+            nochange=0
 
         else:
             print("no improvement!!!")
+            nochange+=1
+            if(nochange>10):
+                print("Breaking")
+                break
         print("-------------------------------------------------------------------------------\n")
         print("Min error = ", min_error, "\n\n")
         print("Min error1 = ", min_error1, "\n\n")
