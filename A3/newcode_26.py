@@ -20,7 +20,7 @@ def mutation(vector,index=-1,mut_prob=0.1):
         index=random.randint(0,MAX_DEG-1)
 
     #here probability is 0.5
-    parity=random.randint(0,1)
+    parity= np.random.choice((0,1),p=[1-mut_prob,mut_prob])
     # print("Parity",parity)
     if parity==1:
         vector[index]=random.uniform(-ranger,ranger)
@@ -29,7 +29,8 @@ def mutation(vector,index=-1,mut_prob=0.1):
 def mutateall(temp):
     vector=np.copy(temp)
     for i in range(len(vector)):
-        vector=mutation(vector,i,1)
+        # vector=mutation(vector,i,0.85)
+        np.random.choice([random.uniform(-ranger,ranger),vector[i]],p=[0.95,0.05])
     return vector
 
 def mutatesome(temp):
@@ -143,6 +144,8 @@ def main():
         # debug statements
         for j in range(pop_size):
             print("person " + str(j)+" error "+ str(parenterrors[j]))
+            print("person " + str(j)+" error "+ str(parenterrors1[j]))
+            print("person " + str(j)+" error "+ str(parenterrors2[j]))
             print("\tvalues"+str(population[j])+"\n\n")
 
         # Assign probabilities to the population
