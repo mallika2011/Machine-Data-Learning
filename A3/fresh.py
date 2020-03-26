@@ -10,7 +10,7 @@ ranger = 10
 pc = 0.2
 pop_size = 30
 select_sure = 5
-cross_select_from = 10
+cross_select_from = 15
 cross_n = int(pop_size/2)
 iter = 30
 
@@ -29,7 +29,7 @@ iter = 30
 def mutateall(temp,prob):
     vector = np.copy(temp)
     for i in range(len(vector)):
-        fact=random.uniform(-0.1, 0.1)
+        fact=random.uniform(-0.7, 0.7)
         vector[i] = np.random.choice([vector[i]*(fact+1), vector[i]], p=[prob,1-prob])
         if(vector[i]<-10) :
             vector[i]=-10
@@ -65,7 +65,7 @@ def crossover(vector1, vector2, index=-1):
         send1[i] = vector2[i]
         send2[i] = vector1[i]
 
-    return mutateall(send1,0.3), mutateall(send2,0.3)
+    return mutateall(send1,0.5), mutateall(send2,0.5)
 
 
 def gen_parent_probabilities(size):
