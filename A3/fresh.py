@@ -237,7 +237,7 @@ def main():
 
         # set the send array by choosing the minimum from all the candidates NOTE: it may not be selected in the new population
         if(min_error == -1 or min_error > candidate_errors[0]):
-            to_send = candidates[0]
+            to_send = np.copy(candidates[0])
             min_error = candidate_errors[0]
             min_error1 = candidate_errors1[0]
             min_error2 = candidate_errors2[0]
@@ -248,6 +248,10 @@ def main():
             nochange+=1
             if(nochange>10):
                 print("Breaking")
+                print("-------------------------------------------------------------------------------\n")
+                print("Min error = ", min_error, "\n\n")
+                print("Min error1 = ", min_error1, "\n\n")
+                print("Min error2 = ", min_error2, "\n\n")
                 break
         print("-------------------------------------------------------------------------------\n")
         print("Min error = ", min_error, "\n\n")
