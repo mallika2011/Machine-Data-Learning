@@ -1,6 +1,6 @@
 import numpy as np
-import tester as server
-# import client_moodle as server
+# import tester as server
+import client_moodle as server
 import random
 
 team_name="team_62" #for our reference
@@ -30,18 +30,20 @@ def mutateall(temp):
     vector=np.copy(temp)
     for i in range(len(vector)):
         # vector=mutation(vector,i,0.85)
-        np.random.choice([random.uniform(-ranger,ranger),vector[i]],p=[0.95,0.05])
+        vector[i]=np.random.choice([random.uniform(-ranger,ranger),vector[i]],p=[0.95,0.05])
     return vector
 
 def mutatesome(temp):
     #5 random integers
     vector=np.copy(temp)
-    a=np.random.choice(np.arange(0,11),5,replace=False)
+    a=np.random.choice(np.arange(0,11),11,replace=False)
     
     for i in a.tolist():
-        vector[i]=random.uniform(vector[i]-1,vector[i]+1)
+        lo=max(-ranger,vector[i]-2)
+        hi=min(ranger,vector[i]+2)
+        vector[i]=random.uniform(lo,hi)
         while vector[i]==temp[i]:
-            vector[i]=random.uniform(vector[i]-1,vector[i]+1)
+            vector[i]=random.uniform(lo,hi)
     return vector
 
 def crossover(vector1, vector2, index=-1):
