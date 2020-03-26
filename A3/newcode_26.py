@@ -8,7 +8,7 @@ MAX_DEG=11 #number of features
 key='847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo'
 ranger=10
 pc=0.2 
-pop_size=50
+pop_size=30
 cross_n=int(pop_size/2)
 iter=40
 
@@ -26,9 +26,21 @@ def mutation(vector,index=-1,mut_prob=0.1):
         vector[index]=random.uniform(-ranger,ranger)
     return vector
 
-def mutateall(vector):
+def mutateall(temp):
+    vector=np.copy(temp)
     for i in range(len(vector)):
         vector=mutation(vector,i,1)
+    return vector
+
+def mutatesome(temp):
+    #5 random integers
+    vector=np.copy(temp)
+    a=np.random.choice(np.arange(0,11),5,replace=False)
+    
+    for i in a.tolist():
+        vector[i]=random.uniform(vector[i]-1,vector[i]+1)
+        while vector[i]==temp[i]:
+            vector[i]=random.uniform(vector[i]-1,vector[i]+1)
     return vector
 
 def crossover(vector1, vector2, index=-1):
@@ -149,9 +161,16 @@ def main():
             arr=[1,2]
             arr[0]=random.randint(0,pop_size-1)
             arr[1]=random.randint(0,pop_size-1)
-            if(shalliquit==100):
+            
+            if(shalliquit>=100):
                 print("your population has converged")
-                quit()
+                new_iter=0
+                for t in range(pop_size):
+                    lol=mutatesome(population[0])
+                    print("mutated a to b",population[0],lol)
+                    child_population[t]=lol
+                break
+
             if check_match(population[arr[0]].tolist(),population[arr[1]].tolist())==1:
                 shalliquit+=1
                 continue
@@ -220,6 +239,9 @@ def main():
             min_error=candidate_errors[0]
             min_error1=candidate_errors1[0]
             min_error2=candidate_errors2[0]
+        
+        else:
+            print("no improvement!!!")
         print("-------------------------------------------------------------------------------\n")
         print("Min error = ", min_error,"\n\n")
         print("Min error1 = ", min_error1,"\n\n")
