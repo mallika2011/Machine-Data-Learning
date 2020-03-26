@@ -15,27 +15,27 @@ cross_n = int(pop_size/2)
 iter = 80
 
 
-def mutation(vector, index=-1, mut_prob=0.2):  # TODO: Changed mutate_prob to 0.2
-    if index == -1:
-        index = random.randint(0, MAX_DEG-1)
+# def mutation(vector, index=-1, mut_prob=0.2):  # TODO: Changed mutate_prob to 0.2
+#     if index == -1:
+#         index = random.randint(0, MAX_DEG-1)
 
-    parity = np.random.choice((0, 1), p=[1-mut_prob, mut_prob])
+#     parity = np.random.choice((0, 1), p=[1-mut_prob, mut_prob])
 
-    if parity == 1:
-        vector[index] = random.uniform(-ranger, ranger)
-    return vector
+#     if parity == 1:
+#         vector[index] = random.uniform(-ranger, ranger)
+#     return vector
 
 
-def mutateall(temp):
+def mutateall(temp,prob):
     vector = np.copy(temp)
     for i in range(len(vector)):
-        # TODO: MUTATE WITH RANGES
-        # lo=max(-ranger,vector[i]-2)
-        # hi=min(ranger,vector[i]+2)
-        lo = max(-ranger, vector[i]+vector[i]*random.uniform(0, 1))
-        hi = min(ranger, vector[i]-vector[i]*random.uniform(0, 1))
-        vector[i] = np.random.choice(
-            [random.uniform(lo, hi), vector[i]], p=[0.95, 0.05])
+        fact=random.uniform(-0.1, 0.1)
+        vector[i] = np.random.choice([vector[i]*(fact+1), vector[i]], p=[prob,1-prob])
+        if(vector[i]<-10) :
+            vector[i]=-10
+        elif(vector[i]>10) :
+            vector[i]=10
+    
     return vector
 
 
@@ -65,7 +65,7 @@ def crossover(vector1, vector2, index=-1):
         send1[i] = vector2[i]
         send2[i] = vector1[i]
 
-    return mutation(send1), mutation(send2)
+    return mutateall(send1,0.3), mutateall(send2,0.3)
 
 
 def gen_parent_probabilities(size):
@@ -119,7 +119,7 @@ def main():
     # generate the population
     for i in range(pop_size):
         temp = np.copy(vector_og)
-        population[i] = mutateall(temp)
+        population[i] = mutateall(temp,0.85)
 
     # generate errors for each individual in the population
     for j in range(pop_size):
@@ -166,16 +166,16 @@ def main():
 
             # Sending parents for crossover
             temp = crossover(population[arr[0]], population[arr[1]])
-            if temp[0] == population[arr[0]].tolist() or temp[1] == population[arr[0]].tolist() or temp[0] == population[arr[1]].tolist() or temp[1] == population[arr[1]].tolist():
+            if temp[0].tolist() == population[arr[0]].tolist() or temp[1].tolist() == population[arr[0]].tolist() or temp[0].tolist() == population[arr[1]].tolist() or temp[1].tolist() == population[arr[1]].tolist():
                 # print("repeated")
                 # print("first", temp[0])
                 # print("Second", temp[1])
                 continue
 
-            child_population[new_iter] = temp[0]
+            child_population[new_iter] = np.copy(temp[0])
             new_iter += 1
 
-            child_population[new_iter] = temp[1]
+            child_population[new_iter] = np.copy(temp[1])
             new_iter += 1
 
         childerrors = np.zeros(pop_size)
