@@ -236,13 +236,13 @@ def main():
         candidates = np.copy(candidates[candidate_errors_inds[::1]])
 
         # TODO: Select the best popsize - 2*(select_sure)
-        cand_iter = 2*select_sure-1
+        cand_iter = 0
 
-        while(cand_iter < pop_size):
-            tempbank[cand_iter] = np.copy(candidates[cand_iter])
-            tempbankerr[cand_iter] = np.copy(candidate_errors[cand_iter])
-            tempbankerr1[cand_iter] = np.copy(candidate_errors1[cand_iter])
-            tempbankerr2[cand_iter] = np.copy(candidate_errors2[cand_iter])
+        while(cand_iter + 2*select_sure < pop_size):
+            tempbank[cand_iter+2*select_sure] = np.copy(candidates[cand_iter])
+            tempbankerr[cand_iter+2*select_sure] = np.copy(candidate_errors[cand_iter])
+            tempbankerr1[cand_iter+2*select_sure] = np.copy(candidate_errors1[cand_iter])
+            tempbankerr2[cand_iter+2*select_sure] = np.copy(candidate_errors2[cand_iter])
             cand_iter += 1
 
 
@@ -260,7 +260,7 @@ def main():
         population = np.copy(population[parenerrorsinds[::1]])
 
 
-        if(min_error == -1 or min_error > population[0]):
+        if(min_error == -1 or min_error > parenterrors[0]):
             to_send = np.copy(population[0])
             min_error = np.copy(parenterrors[0])
             min_error1 = np.copy(parenterrors1[0])
