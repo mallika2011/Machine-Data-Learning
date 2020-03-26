@@ -1,6 +1,6 @@
 import numpy as np
-import tester as server
-# import client_moodle as server
+# import tester as server
+import client_moodle as server
 import random
 
 team_name = "team_62"  # for our reference
@@ -12,7 +12,7 @@ pop_size = 30
 select_sure = 5
 cross_select_from = 10
 cross_n = int(pop_size/2)
-iter = 80
+iter = 30
 
 
 # def mutation(vector, index=-1, mut_prob=0.2):  # TODO: Changed mutate_prob to 0.2
