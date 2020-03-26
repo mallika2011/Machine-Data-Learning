@@ -11,7 +11,7 @@ pc = 0.2
 pop_size = 30
 select_sure = 5
 cross_n = int(pop_size/2)
-iter = 30
+iter = 100
 
 
 def mutation(vector, index=-1, mut_prob=0.2):  # TODO: Changed mutate_prob to 0.2
@@ -71,10 +71,7 @@ def crossover_select(parentprobalities):
     return parents
 
 def crossover_select2(parenterrors, num):
-    parents = []
-    parents.append(random.randint(0, num))
-    parents.append(random.randint(0, num))
-    return parents
+    return random.sample(range(pop_size),num)
 
 
 def check_match(vector1, vector2):
@@ -149,10 +146,11 @@ def main():
         
         while(new_iter < pop_size):
 
-            # arr = crossover_select(parentprobalities)
+            #TODO: WE MAY HAVE TO CHOOSE BETWEEN THESE TWO OPTIONS
+            arr = crossover_select(parentprobalities)
             
             #TODO: Select randomly among top k parents  (For now k =10) 
-            arr = crossover_select2(parenterrors, 10)
+            # arr = crossover_select2(parenterrors, 10)
 
             # Sending parents for crossover
             temp = crossover(population[arr[0]], population[arr[1]])
