@@ -1,6 +1,6 @@
 import numpy as np
-import tester as server
-# import client_moodle as server
+# import tester as server
+import client_moodle as server
 import random
 
 team_name = "team_62"  # for our reference
@@ -14,6 +14,7 @@ cross_select_from = 10
 cross_n = int(pop_size/2)
 iter = 30
 prob_mut_cross=0.5
+mutate_range=0.1
 
 # def mutation(vector, index=-1, mut_prob=0.2):  # TODO: Changed mutate_prob to 0.2
 #     if index == -1:
@@ -29,7 +30,7 @@ prob_mut_cross=0.5
 def mutateall(temp,prob):
     vector = np.copy(temp)
     for i in range(len(vector)):
-        fact=random.uniform(-0.7, 0.7)
+        fact=random.uniform(-mutate_range, mutate_range)
         vector[i] = np.random.choice([vector[i]*(fact+1), vector[i]], p=[prob,1-prob])
         if(vector[i]<-10) :
             vector[i]=-10
@@ -101,7 +102,7 @@ def check_match(vector1, vector2):
 
 def main():
     print("pop_size:", pop_size, "iter:", iter, "cross_select_from",cross_select_from)
-    print("select_sure",select_sure,"prob_mut_cross",prob_mut_cross)
+    print("select_sure",select_sure,"prob_mut_cross",prob_mut_cross,"mutate_range",mutate_range)
 
     vector_og = [0.0, 0.1240317450077846, -6.211941063144333, 0.04933903144709126, 0.03810848157715883, 8.132366097133624e-05, -
                  6.018769160916912e-05, -1.251585565299179e-07, 3.484096383229681e-08, 4.1614924993407104e-11, -6.732420176902565e-12]
