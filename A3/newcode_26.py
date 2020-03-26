@@ -1,6 +1,6 @@
 import numpy as np
-# import tester as server
-import client_moodle as server
+import tester as server
+# import client_moodle as server
 import random
 
 team_name="team_62" #for our reference
@@ -10,7 +10,7 @@ ranger=10
 pc=0.2 
 pop_size=30
 cross_n=int(pop_size/2)
-iter=40
+iter=30
 
 
 def mutation(vector,index=-1,mut_prob=0.1):
@@ -30,7 +30,12 @@ def mutateall(temp):
     vector=np.copy(temp)
     for i in range(len(vector)):
         # vector=mutation(vector,i,0.85)
-        vector[i]=np.random.choice([random.uniform(-ranger,ranger),vector[i]],p=[0.95,0.05])
+        #TODO: MUTATE WITH RANGES
+        # lo=max(-ranger,vector[i]-2)
+        # hi=min(ranger,vector[i]+2)
+        lo=max(-ranger,vector[i]+vector[i]*random.uniform(0,1))
+        hi=min(ranger,vector[i]-vector[i]*random.uniform(0,1))
+        vector[i]=np.random.choice([random.uniform(lo,hi),vector[i]],p=[0.95,0.05])
     return vector
 
 def mutatesome(temp):
@@ -39,8 +44,11 @@ def mutatesome(temp):
     a=np.random.choice(np.arange(0,11),11,replace=False)
     
     for i in a.tolist():
-        lo=max(-ranger,vector[i]-2)
-        hi=min(ranger,vector[i]+2)
+        #TODO: MUTATE WITH RANGES
+        # lo=max(-ranger,vector[i]-2)
+        # hi=min(ranger,vector[i]+2)
+        lo=max(-ranger,vector[i]+vector[i]*random.uniform(0,1))
+        hi=min(ranger,vector[i]-vector[i]*random.uniform(0,1))
         vector[i]=random.uniform(lo,hi)
         while vector[i]==temp[i]:
             vector[i]=random.uniform(lo,hi)
@@ -92,9 +100,7 @@ def check_match(vector1,vector2):
         return 1
 
 def main():
-    w1=0.2
-    w2=0.8
-    print("PC: " ,pc, " POP_SIZE: ",pop_size," ITER : ", iter, "w1: ",w1,"w2: ",w2, "Stop : ", "50")
+    print("PC: " ,pc, " POP_SIZE: ",pop_size," ITER : ", iter, "Stop : ", "50")
 
     vector_og=[0.0, 0.1240317450077846, -6.211941063144333, 0.04933903144709126, 0.03810848157715883, 8.132366097133624e-05, -6.018769160916912e-05, -1.251585565299179e-07, 3.484096383229681e-08, 4.1614924993407104e-11, -6.732420176902565e-12]
     # vector_og=[-9.78736351e+00 ,-6.30079234e+00 ,-5.86904268e+00 , 4.93390314e-02,3.81084816e-02 , 8.13236610e-05, -6.01876916e-05, -1.25158557e-07,3.48409638e-08,  4.16149250e-11, -6.73242018e-12]
@@ -120,15 +126,13 @@ def main():
         err=server.get_errors(key,temp)
         
         #adding the two errors and storing in parenterror
-        parenterrors[j]=(w1*err[0]+w2*err[1])
+        parenterrors[j]=(err[0]+err[1])
         parenterrors1[j]=(err[0])
         parenterrors2[j]=(err[1])
 
     # have to change this to a while loop with appropriate condition later
     for iter_num in range(iter):
-        if(iter_num > 50 ):
-            w1=1
-            w2=1
+
 
         print("\n\n\n\n********"+str(iter_num)+"*********")
 
@@ -213,7 +217,7 @@ def main():
             err=server.get_errors(key,temp)
             
             #adding the two errors and storing in parenterror
-            childerrors[j]=(w1*err[0]+w2*err[1])
+            childerrors[j]=(err[0]+err[1])
             childerrors1[j]=(err[0])
             childerrors2[j]=(err[1])
 
