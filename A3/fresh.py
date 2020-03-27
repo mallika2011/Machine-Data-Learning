@@ -8,7 +8,7 @@ MAX_DEG = 11  # number of features
 key = '847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo'
 ranger = 10
 pc = 0.2
-pop_size = 30
+pop_size = 50
 select_sure = 5
 cross_select_from = 10
 cross_n = int(pop_size/2)
@@ -271,13 +271,13 @@ def main():
         else:
             print("no improvement!!!")
             nochange+=1
-            if(nochange>10):
-                print("Breaking")
-                print("-------------------------------------------------------------------------------\n")
-                print("Min error = ", min_error, "\n\n")
-                print("Min error1 = ", min_error1, "\n\n")
-                print("Min error2 = ", min_error2, "\n\n")
-                break
+            # if(nochange>10):
+            #     print("Breaking")
+            #     print("-------------------------------------------------------------------------------\n")
+            #     print("Min error = ", min_error, "\n\n")
+            #     print("Min error1 = ", min_error1, "\n\n")
+            #     print("Min error2 = ", min_error2, "\n\n")
+            #     break
         print("-------------------------------------------------------------------------------\n")
         print("Min error = ", min_error, "\n\n")
         print("Min error1 = ", min_error1, "\n\n")
