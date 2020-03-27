@@ -12,8 +12,8 @@ pop_size = 30
 select_sure = 5
 cross_select_from = 10
 cross_n = int(pop_size/2)
-iter = 20
-prob_mut_cross=0.5
+iter = 30
+prob_mut_cross=0.7
 mutate_range=0.1
 
 # def mutation(vector, index=-1, mut_prob=0.2):  # TODO: Changed mutate_prob to 0.2
@@ -28,7 +28,6 @@ mutate_range=0.1
 
 
 def mutateall(temp,prob):
-    mutate_range=random.uniform(0,1)
     vector = np.copy(temp)
     for i in range(len(vector)):
         fact=random.uniform(-mutate_range, mutate_range)
