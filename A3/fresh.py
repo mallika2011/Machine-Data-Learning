@@ -8,26 +8,14 @@ MAX_DEG = 11  # number of features
 key = '847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo'
 ranger = 10
 pc = 0.2
-pop_size = 50
+pop_size = 30
 select_sure = 5
-cross_select_from = 10
+cross_select_from = 7
 cross_n = int(pop_size/2)
-iter = 30
-prob_mut_cross=0.7
-mutate_range=0.1
-
-# def mutation(vector, index=-1, mut_prob=0.2):  # TODO: Changed mutate_prob to 0.2
-#     if index == -1:
-#         index = random.randint(0, MAX_DEG-1)
-
-#     parity = np.random.choice((0, 1), p=[1-mut_prob, mut_prob])
-
-#     if parity == 1:
-#         vector[index] = random.uniform(-ranger, ranger)
-#     return vector
+iter = 44  
 
 
-def mutateall(temp,prob):
+def mutateall(temp,prob, mutate_range):
     vector = np.copy(temp)
     for i in range(len(vector)):
         fact=random.uniform(-mutate_range, mutate_range)
@@ -56,7 +44,7 @@ def mutateall(temp,prob):
 #             send2.append(vector1[i])
 
 #     return mutation(send1), mutation(send2)
-def crossover(vector1, vector2, index=-1):
+def crossover(vector1, vector2, mutate_range,prob_mut_cross, index=-1):
     send1 = vector1.tolist()
     send2 = vector2.tolist()
 
@@ -66,22 +54,7 @@ def crossover(vector1, vector2, index=-1):
         send1[i] = np.copy(vector2[i])
         send2[i] = np.copy(vector1[i])
 
-    return mutateall(send1,prob_mut_cross), mutateall(send2,prob_mut_cross)
-
-
-# def gen_parent_probabilities(size):
-#     parentprobalities = np.zeros(size)
-#     for j in range(size-1):
-#         parentprobalities[j] = ((1-pc)**j)*pc
-#     parentprobalities[size-1] = ((1-pc)**(size-1))
-#     return parentprobalities
-
-
-# def crossover_select(parentprobalities):
-#     parents = []
-#     parents = np.random.choice(
-#         np.arange(0, pop_size), 2, replace=False, p=parentprobalities)
-#     return parents
+    return mutateall(send1,prob_mut_cross,mutate_range), mutateall(send2,prob_mut_cross,mutate_range)
 
 
 def crossover_select2(parenterrors, num):
@@ -101,6 +74,9 @@ def check_match(vector1, vector2):
 
 
 def main():
+
+    mutate_range=0.1
+    prob_mut_cross = 0.7
     print("pop_size:", pop_size, "iter:", iter, "cross_select_from",cross_select_from)
     print("select_sure",select_sure,"prob_mut_cross",prob_mut_cross,"mutate_range",mutate_range)
 
@@ -120,7 +96,7 @@ def main():
     # generate the population
     for i in range(pop_size):
         temp = np.copy(vector_og)
-        population[i] = np.copy(mutateall(temp,0.85))
+        population[i] = np.copy(mutateall(temp,0.85,mutate_range))
 
     # generate errors for each individual in the population
     for j in range(pop_size):
@@ -135,6 +111,12 @@ def main():
 
     # have to change this to a while loop with appropriate condition later
     for iter_num in range(iter):
+
+        if((iter_num)%6==0 and iter_num!=0):
+            mutate_range-=0.01
+            prob_mut_cross+=0.01
+            print("::::::::::::::::         changing")
+
 
         print("\n\n\n\n********"+str(iter_num)+"*********")
 
@@ -166,7 +148,7 @@ def main():
             arr = crossover_select2(parenterrors, cross_select_from)
 
             # Sending parents for crossover
-            temp = crossover(population[arr[0]], population[arr[1]])
+            temp = crossover(population[arr[0]], population[arr[1]],mutate_range,prob_mut_cross)
             if temp[0].tolist() == population[arr[0]].tolist() or temp[1].tolist() == population[arr[0]].tolist() or temp[0].tolist() == population[arr[1]].tolist() or temp[1].tolist() == population[arr[1]].tolist():
                 # print("repeated")
                 # print("first", temp[0])
