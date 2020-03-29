@@ -12,7 +12,7 @@ pop_size = 30
 select_sure = 5
 cross_select_from = 7
 cross_n = int(pop_size/2)
-iter = 44  
+iter = 40
 
 
 def mutateall(temp,prob, mutate_range):
@@ -113,9 +113,9 @@ def main():
     for iter_num in range(iter):
 
         if((iter_num)%6==0 and iter_num!=0):
-            mutate_range-=0.01
+            mutate_range-=0.015
             prob_mut_cross+=0.01
-            print("::::::::::::::::         changing")
+            print("::::::::::::::::changing ", mutate_range)
 
 
         print("\n\n\n\n********"+str(iter_num)+"*********")
