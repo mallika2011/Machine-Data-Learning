@@ -103,8 +103,7 @@ def main():
         # passing a list to the get_errors function
         temp = population[j].tolist()
         err = server.get_errors(key, temp)
-
-        # adding the two errors and storing in parenterror
+        # adding the two errors and storing in parenterror - fitness function
         parenterrors[j] = np.copy((err[0]+err[1]))
         parenterrors1[j] = np.copy((err[0]))
         parenterrors2[j] = np.copy((err[1]))
