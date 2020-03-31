@@ -16,7 +16,6 @@
     Anything else that you used, tricks, brute force, etc. that we should be aware of. -->
 
 
-
 <!-- # how to choose individuals for crossover
 # how to choose the next gen
 
@@ -345,4 +344,9 @@ vector[i] = np.random.choice([vector[i]*(fact+1), vector[i]], p=[prob,1-prob])
 With simulated annealing, this range *decreases by 0.01* every 6 iterations.
  
 * ```prob_mut_cross``` :  This parameter is set to **0.7** to start with a large degree of mutations. This will ensure diversity and prevent converging to a local minima. Further the ```prob_mut_cross``` increases every 6 iterations. 
+
+
+## STATISTICAL INFORMATION :
+
+## HEURISTICS APPLIED:
 
