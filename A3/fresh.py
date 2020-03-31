@@ -10,7 +10,7 @@ ranger = 10
 pc = 0.2
 pop_size = 30
 select_sure = 5
-cross_select_from = 7
+cross_select_from = 10
 cross_n = int(pop_size/2)
 iter = 40
 
@@ -96,7 +96,7 @@ def main():
     # generate the population
     for i in range(pop_size):
         temp = np.copy(vector_og)
-        population[i] = np.copy(mutateall(temp,0.85,mutate_range))
+        population[i] = np.copy(mutateall(temp,0.9,mutate_range))
 
     # generate errors for each individual in the population
     for j in range(pop_size):
@@ -113,7 +113,7 @@ def main():
     for iter_num in range(iter):
 
         if((iter_num)%6==0 and iter_num!=0):
-            mutate_range-=0.015
+            mutate_range-=0.01
             prob_mut_cross+=0.01
             print("::::::::::::::::changing ", mutate_range)
 
