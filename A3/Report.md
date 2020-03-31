@@ -1,12 +1,12 @@
 <!--     Summary of your Genetic Algorithm with all the steps, also mention if you have made any major changes to the base genetic algorithm.
-    Three diagrams that showcase your first three iterations as shown in the attached image.
+    todo Three diagrams that showcase your first three iterations as shown in the attached image.
     Explain your fitness function.
     Explain your crossover function.
     How exactly did you apply the mutations(if any).
     What were your hyperparameters like pool size, splitting point for creating new genes, etc and why did you choose those parameters?
-    Statistical information like Number of iterations to converge, etc.
-    What heuristics did you apply, mention the ones that didn't work too.
-     Trace of output for the first 10 steps as shown:
+    todo Statistical information like Number of iterations to converge, etc.
+    todo What heuristics did you apply, mention the ones that didn't work too.
+    todo Trace of output for the first 10 steps as shown:
 
     Initial population
     Vectors selected for crossover
@@ -47,7 +47,7 @@
 **Tanvi Karandikar    - 2018101059**
 
 
-## Summary of the genetic algorithm : 
+## SUMMARY OF GENETIC ALGORITHM: 
 
 The genetic algorithm is a search heuristic that is inspired by Charles Darwin’s theory of natural evolution. This algorithm reflects the process of natural selection where the fittest individuals are selected for reproduction in order to produce offspring of the next generation.
 
@@ -91,7 +91,7 @@ for j in range(pop_size):
 
 * Once the parent errors have been obtained, the parent population is sorted in the **increasing** order of their *errors* the crossover step takes place. 
 
-* Crossovers happpen until **pop_size** children have been produced. The parens for crossover are chosen from a set of top **k** parents in the parent population. 
+* Crossovers happpen until **pop_size** children have been produced. The parens for crossover are chosen from a set of top **```select_sure```** parents in the parent population. 
 
 * The parents chosen from the previous step are sent to the crossover function which returns two children (two vectors).
 The ```crossover``` function returns **mutated** the child vectors.
@@ -245,4 +245,104 @@ else:
 
 The Genetic Algorithm is repeated (Step 3 - Step 7) for ```iter``` number of iterations (this was done considering the requests that can be made to the server in order to obtain the errors for the different vectors was limited).
 
+
+## FITNESS FUNCTION
+
+The fitness funciton is one that is used to decide whether an indivdual from a population will advance to the next generation or not. Greater the fitness, better is the individual. <br>
+However, here we have been provided with the *train and validation errors* of the individual vectors. 
+
+The relation between fitness and error is :  **Lower is the error => Better is the fitness**
+
+The fitness function we have used while coding the Genetic Algorihtm is : 
+```py
+err = err1 + err2
+```
+
+We have not included weights in our fitness function since otherwise the function would be biased to a particular error. Here, both training and validation error are equally important and hence it is hard to say which is more fit. 
+
+
+## CROSSOVER FUNCTION
+
+In the GA, crossover is a function that is performed on two parents to produce offsprings.
+There are two parts in the crossover function :
+1. Select the parents for crossover
+2. Perform the crossover
+
+In our implementation, we make our selection for the crossover from the top ```cross_select``` number of parents, where the parents are sorted in increasing order of their *errors*
+
+As for the actual crossover function - 
+
+It first generates a random list of ```crossover_no``` numbers. The chromosoes (elements) at these indices are swapped between the two parent vectors resulting in the formation of two child vectors.
+
+The child vectors are then mutated and returned from the funciton.
+
+```python
+def crossover(vector1, vector2, mutate_range,prob_mut_cross, index=-1):
+    send1 = vector1.tolist()
+    send2 = vector2.tolist()
+
+    a = np.random.choice(np.arange(0, 11), 5, replace=False)
+
+    for i in a.tolist():
+        send1[i] = np.copy(vector2[i])
+        send2[i] = np.copy(vector1[i])
+
+    return mutateall(send1,prob_mut_cross,mutate_range), mutateall(send2,prob_mut_cross,mutate_range)
+
+```
+
+
+## MUTATIONS
+
+Our mutation function takes 3 parameters 
+
+* ```temp``` : This is the vector that is to be mutated.
+
+* ```prob``` : The probability with which a particular gene in a chromosome will be mutated. As the iterations of the GA proceed, we increase the probability of mutation by 0.01 (every 6 iterations). This is also helpful in ensuring that the algorithm does not converge to a local minima. In case it is approaching a local minima, then the increased probability of mutation helps in bringing **diversity** in the population.
+
+* ```mutate_range``` : The range within which the element will be mutated. This is a crucial parameter. Since the given overfit vector is very sensitive and if the genes are changed by a relatively large amount (changing the order of the element itself) then this could reflect in the train and validation errors in a negative way. Further, we have implemented **simulated annealing** here wherein we start with a ```mutate_range``` of 0.1 and then gradually decrease it over the GA iterations (by 0.01 every 6 iterations)
+
+We have used mutations in 2 places :
+
+1. To produce the first generation (initial population) for the genetic algorithm : Here we pass a high initial ```prob``` of mutation so that a the degree of mutaiton is high and the first generation of population is diverse enough. 
+
+2. On child vectors after crossover : Here the child vectors are mutated based on the parameters that have been passed to the function. 
+
+
+## HYPERPARAMETERS
+
+```python 
+team_name = "team_62"  # for our reference
+MAX_DEG = 11  # number of features
+key = '847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo'
+ranger = 10
+pc = 0.2
+pop_size = 30
+select_sure = 5
+cross_select_from = 10
+crossover_no = 3
+iter = 40
+mutate_range=0.1
+prob_mut_cross = 0.7
+```
+
+* ```pop_size``` : Initially we started with a population size of 100. As we progressed in the assignment, we were able to better our GA and realised that a pool size of **30** suited the best. This also gave us room to run more iterations and not exceeding the number of requests to the server per day.
+
+* ```select_sure``` : In order to ensure that the individuals with the best genes are not lost in the future generations we made sure that we select the top few parents and children for sure (sorted in the asc order of errors). While experimenting with this value we found that on choosing a very high ```select_sure``` value - there was no diversity in the future generations. All the points were clustered together and the algorithm converged to a local minima. On choosing a very low ```select_sure``` the algorithm performed poorly. Hence after multiple tries, we fixed a ```select_sure``` of **5**
+
+* ```cross_select_from``` : This parameter selects the top few parents to send to the ```crossover``` function. If this is very low, then the options to choose the parents for crossover are restricted. Likewise a very high ```cross_select_from``` leads to too much randomness. We stuck to a value of **10**
+
+<!-- todo may have to remove incase we go with the random.randrange() -->
+
+* ```crossover_no``` : This number indicates the number of indices at which the elements will be swapped between the two parents in the ```crossover``` function. We have chosen a value of **5** to ensure that there is a sufficient degree of crossover that can help in the GA. We also tried randomly generating a number between 0-5 but that did not help.
+
+        
+* ```mutate_range``` : We have set this parameter to **0.1**. The overfit vector is sensitive and if the mutation is drastic it will lead to a high error. Hence we made sure that the elements of the vector undergoing mutation change by this formula : 
+```python
+fact=random.uniform(-mutate_range, mutate_range)
+vector[i] = np.random.choice([vector[i]*(fact+1), vector[i]], p=[prob,1-prob])
+```
+With simulated annealing, this range *decreases by 0.01* every 6 iterations.
+ 
+* ```prob_mut_cross``` :  This parameter is set to **0.7** to start with a large degree of mutations. This will ensure diversity and prevent converging to a local minima. Further the ```prob_mut_cross``` increases every 6 iterations. 
 

@@ -11,7 +11,7 @@ pc = 0.2
 pop_size = 30
 select_sure = 5
 cross_select_from = 10
-cross_n = int(pop_size/2)
+crossover_no = 3
 iter = 40
 
 
@@ -48,7 +48,8 @@ def crossover(vector1, vector2, mutate_range,prob_mut_cross, index=-1):
     send1 = vector1.tolist()
     send2 = vector2.tolist()
 
-    a = np.random.choice(np.arange(0, 11), 5, replace=False)
+    # a = np.random.choice(np.arange(0, 11), crossover_no, replace=False)
+    a = np.random.choice(np.arange(0, 11), random.randrange(6), replace=False)
 
     for i in a.tolist():
         send1[i] = np.copy(vector2[i])
@@ -96,7 +97,7 @@ def main():
     # generate the population
     for i in range(pop_size):
         temp = np.copy(vector_og)
-        population[i] = np.copy(mutateall(temp,0.9,mutate_range))
+        population[i] = np.copy(mutateall(temp,0.85,mutate_range))
 
     # generate errors for each individual in the population
     for j in range(pop_size):
