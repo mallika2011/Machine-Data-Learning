@@ -8,11 +8,11 @@ MAX_DEG = 11  # number of features
 key = '847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo'
 ranger = 10
 pc = 0.2
-pop_size = 30
-select_sure = 5
-cross_select_from = 10
-crossover_no = 3
-iter = 40
+pop_size = 10
+select_sure = 3
+cross_select_from = 2
+crossover_no = 5
+iter = 18
 
 
 def mutateall(temp,prob, mutate_range):
@@ -49,7 +49,7 @@ def crossover(vector1, vector2, mutate_range,prob_mut_cross, index=-1):
     send2 = vector2.tolist()
 
     # a = np.random.choice(np.arange(0, 11), crossover_no, replace=False)
-    a = np.random.choice(np.arange(0, 11), random.randrange(6), replace=False)
+    a = np.random.choice(np.arange(0, 11),5, replace=False)
 
     for i in a.tolist():
         send1[i] = np.copy(vector2[i])
@@ -77,7 +77,7 @@ def check_match(vector1, vector2):
 def main():
 
     mutate_range=0.1
-    prob_mut_cross = 0.7
+    prob_mut_cross = 0.5
     print("pop_size:", pop_size, "iter:", iter, "cross_select_from",cross_select_from)
     print("select_sure",select_sure,"prob_mut_cross",prob_mut_cross,"mutate_range",mutate_range)
 
@@ -105,7 +105,7 @@ def main():
         temp = population[j].tolist()
         err = server.get_errors(key, temp)
         # adding the two errors and storing in parenterror - fitness function
-        parenterrors[j] = np.copy((err[0]+err[1]))
+        parenterrors[j] = np.copy((err[0]+1.5*err[1]))
         parenterrors1[j] = np.copy((err[0]))
         parenterrors2[j] = np.copy((err[1]))
 
@@ -171,7 +171,7 @@ def main():
             err = server.get_errors(key, temp)
 
             # adding the two errors and storing in parenterror
-            childerrors[j] = np.copy((err[0]+err[1]))
+            childerrors[j] = np.copy((err[0]+1.5*err[1]))
             childerrors1[j] = np.copy((err[0]))
             childerrors2[j] = np.copy((err[1]))
 

@@ -342,7 +342,7 @@ prob_mut_cross = 0.7
 fact=random.uniform(-mutate_range, mutate_range)
 vector[i] = np.random.choice([vector[i]*(fact+1), vector[i]], p=[prob,1-prob])
 ```
-With simulated annealing, this range *decreases by 0.01* every 6 iterations.
+With simulated annealing, this range *decreases by 0.01* every 6 iterations and ```prob_mut_cross``` increases by 0.01.
  
 * ```prob_mut_cross``` :  This parameter is set to **0.7** to start with a large degree of mutations. This will ensure diversity and prevent converging to a local minima. Further the ```prob_mut_cross``` increases every 6 iterations. 
 
@@ -351,6 +351,11 @@ With simulated annealing, this range *decreases by 0.01* every 6 iterations.
 ## STATISTICAL INFORMATION :
  |```pop size``` | ```iter``` |```cross select from``` | ```select sure``` | ```prob mut cross``` |  ```mutate range``` | ```crossover no```|file| ```sim. ann.```| ```train error``` | ```validation error```| ```comments```
 --- | --- | --- | --- |--- |--- |--- |--- |--- |--- |--- |---
+10 | 18 | 2 | 3 | 0.5 | 0.1 | 5| 0104_4 | yes, 0.01 |  3617324.8067470654  |  3630659.506563143  | error func is train + 1.5*val
+30 | 39 | 13 | 6 | 0.5 | 0.1 | 5 | 0104_3 | yes, 0.01 |  803726.2793879907| 1513600.5745310718 | error func is train + 1.5*val
+30 | 39 | 10 | 5 | 0.5 | 0.1 | 5 | 0104_2 | yes, 0.01 | 2031799.9012306575  | 634542.5036451207 | error func is train + 1.5*val
+30 | 39 | 7 | 5 | 0.7 | 0.1 | 5 | 0104_1 | yes, 0.01 | 1566576.511383684 |1077161.2608285465  | error func is train + 1.5*val
+30 | 39 | 10 | 5 | 0.7 | 0.1 | 5 | 0104 | yes, 0.01 | 679575.7006452213  | 1923291.54914161 | error func is train + 1.5*val
 30 | 40 | 10 | 5 | 0.7 | 0.1 | random | 3103_2 | yes, 0.01 | 1215576.5333894524 | 2444060.231379668 |
 30 | 40 | 10 | 5 | 0.7 | 0.1 | random | 3103_1 | yes, 0.01 | 1012256.7349054145 | 1797902.3090917815 | 
 30 | 40 | 10 | 5 | 0.7 | 0.1 | 3 | 3103  | yes, 0.01 | 572523.343610025 | 3327798.9412914915 |
