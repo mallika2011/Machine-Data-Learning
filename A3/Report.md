@@ -88,9 +88,9 @@ for j in range(pop_size):
 
 > *STEP 3: CROSSOVER OF PARENT POULATION*
 
-* Once the parent errors have been obtained, the parent population is sorted in the **increasing** order of their *errors* the crossover step takes place. 
+* Once the parent errors have been obtained, the parent population is sorted in the **increasing** order of their *errors*. Then the crossover step takes place. 
 
-* Crossovers happpen until **pop_size** children have been produced. The parens for crossover are chosen from a set of top **```select_sure```** parents in the parent population. 
+* Crossovers happpen until **```pop_size```** children have been produced. The parents for crossover are chosen from a set of top **```select_sure```** parents in the parent population. 
 
 * The parents chosen from the previous step are sent to the crossover function which returns two children (two vectors).
 The ```crossover``` function returns **mutated** the child vectors.
@@ -273,13 +273,14 @@ As for the actual crossover function -
 
 It first generates a random list of ```crossover_no``` numbers. The chromosoes (elements) at these indices are swapped between the two parent vectors resulting in the formation of two child vectors.
 
-The child vectors are then mutated and returned from the funciton.
+The child vectors are then mutated and returned from the function.
 
 ```python
 def crossover(vector1, vector2, mutate_range,prob_mut_cross, index=-1):
     send1 = vector1.tolist()
     send2 = vector2.tolist()
 
+    #crossover_no is the 2nd argument, here it is 5
     a = np.random.choice(np.arange(0, 11), 5, replace=False)
 
     for i in a.tolist():
@@ -346,7 +347,35 @@ With simulated annealing, this range *decreases by 0.01* every 6 iterations.
 * ```prob_mut_cross``` :  This parameter is set to **0.7** to start with a large degree of mutations. This will ensure diversity and prevent converging to a local minima. Further the ```prob_mut_cross``` increases every 6 iterations. 
 
 
+
 ## STATISTICAL INFORMATION :
+ |```pop size``` | ```iter``` |```cross select from``` | ```select sure``` | ```prob mut cross``` |  ```mutate range``` | ```crossover no```|file| ```sim. ann.```| ```train error``` | ```validation error```| ```comments```
+--- | --- | --- | --- |--- |--- |--- |--- |--- |--- |--- |---
+30 | 40 | 10 | 5 | 0.7 | 0.1 | random | 3103_2 | yes, 0.01 | 1215576.5333894524 | 2444060.231379668 |
+30 | 40 | 10 | 5 | 0.7 | 0.1 | random | 3103_1 | yes, 0.01 | 1012256.7349054145 | 1797902.3090917815 | 
+30 | 40 | 10 | 5 | 0.7 | 0.1 | 3 | 3103  | yes, 0.01 | 572523.343610025 | 3327798.9412914915 |
+30 | 40 | 10 | 5 | 0.7 | 0.1 | 5 | 3003_3 | yes, 0.01 | 1527808.4147913724|  497429.4173338076 | 
+30 | 40 | 10 | 5 | 0.7 | 0.1 | 5 | 3003_2 | yes, 0.01 | 1485648.3782189102| 1164865.0420789355 | 
+30 | 40 | 7 | 5 | 0.7 | 0.1 | 5 | 3003_1 | yes, 0.01 | 665415.2265824392 | 1687931.0229168932 | parents mutating with 0.9
+30 | 40 | 7 | 5 | 0.7 | 0.1 | 5 | 3003 | yes, 0.01 | 1944743.8014151566  |  782550.4807442231 | parents mutating with 0.9
+30 | 40 | 7 | 5 | 0.7 | 0.1 | 5 | 2903_3 | yes, 0.015 | 912177.449795386  | 1806047.647304091 | 
+30 | 40 | 7 | 5 | 0.7 | 0.1 | 5 | 2903_2 | yes, 0.02 | 1998806.5615125368 |952296.2811102594 | repeat run
+30 | 40 | 7 | 5 | 0.7 | 0.1 | 5 | 2903_1 | yes, 0.02 | 951678.2408062371| 1734695.3278837525 
+30 | 40 | 7 | 5 | 0.7 | 0.1 | 5 | 2903 | yes, 0.01 | 660381.9279306813 | 2192867.2831713646
+30 | 39 | 13 | 3 | 0.7 | 0.1 |5 | 2803_3 | yes, 0.01 | 742833.1563856753 | 843956.1519189278 
+30 | 39 | 13 | 3 | 0.7 | 0.1 |5 | 2803_2 | yes, 0.01 | 1920056.1907173607 | 1183183.5002919834 
+30 | 39 | 13 | 3 | 0.7 | 0.1 |5 | 2803_1 | yes, 0.01 | 1765034.6475311567 |  620777.6981618816 
+30 | 39 | 13 | 3 | 0.7 | 0.1 |5 | 2803 | yes, 0.01| 2514326.850566617 | 4521127.444235682| 
+30 | 20 | 13 | 3 | 0.7 | 0.1| 5| 2703_3 | no| 528858.6935751587| 2301976.8057521987 | 
+50 | 30 | 10 | 5 | 0.7 | 0.1| 5 |2703_2 | no |918456.6020391921 |  1417566.1347763892 | repeat run
+50 | 30 | 10 | 5 | 0.7 | 0.1| 5 |2703_1 | no | 1982854.5607651887 | 1108493.5319184358 | 
+30 | 30 | 10 | 5 | 0.7| 0.1 | 5 | 2703 | no | 859024.1161797692  |  849670.8717230024 | 
+50 | 30 | 10 | 5 | 0.5 | 0.7| 5 |2603_7 | no | 6317965.3754429165  | 24329450.087357055 | stop if no improvement 10 times 
+30 | 30 | 10 | 5 | 0.5| 0.1 | 5 | 2603_8 | no | 1708927.894908347 | 891858.3512177946 | stop if no improvement 10 times 
+30 | 30 | 10 | 5 | 0.5| random(0,1) | 5 | 2603_9 | no |  2963905.4910056787 | 4259197.040362741 | stop if no improvement 10 times
+30 | 20 | 10 | 5 | 0.5| random(0,1) | 5 | 2603_10 | no |  5225454.083665686|  9832884.087375896  |stop if no improvement 10 times 
+
+
 
 ## HEURISTICS APPLIED:
 
