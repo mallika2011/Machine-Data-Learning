@@ -9,10 +9,10 @@ key = '847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo'
 ranger = 10
 pc = 0.2
 pop_size = 10
-select_sure = 3
-cross_select_from = 2
+select_sure = 2
+cross_select_from = 3
 crossover_no = 5
-iter = 18
+iter = 40
 
 
 def mutateall(temp,prob, mutate_range):
@@ -171,7 +171,10 @@ def main():
             err = server.get_errors(key, temp)
 
             # adding the two errors and storing in parenterror
-            childerrors[j] = np.copy((err[0]+1.5*err[1]))
+            if(iter_num >= 15):
+                childerrors[j] = np.copy((err[0]+err[1]))
+            else:
+                childerrors[j] = np.copy((err[0]+1.5*err[1]))
             childerrors1[j] = np.copy((err[0]))
             childerrors2[j] = np.copy((err[1]))
 
