@@ -1,6 +1,7 @@
 import numpy as np
 import tester as server
 # import client_moodle as server
+from tabulate import tabulate
 import random
 
 team_name = "team_62"  # for our reference
@@ -14,8 +15,47 @@ cross_select_from = 6
 crossover_no = 5
 iter = 18
 
+
+def formatArray(x):
+    y=[]
+    for i in range (pop_size):
+        y.append([x[i]])
+    y=np.array(y)
+    return y
+
 def showtable(arrparents,arrparrerrs,arrchoices,arrchildren,arrchildrenmutated,arrchilderrors):
-    print(arrparents,arrparrerrs,arrchoices,arrchildren,arrchildrenmutated,arrchilderrors)
+
+    #format all arrays for printing 
+    arrparents = formatArray(arrparents)
+    arrchildren = formatArray(arrchildren)
+    arrchildrenmutated = formatArray(arrchildrenmutated)
+
+    tempchoice = []
+    for i in range(pop_size):
+        ind = int(i/2)
+        tempchoice.append([[arrchoices[ind][0],arrchoices[ind][1]]])
+    tempchoice=np.array(tempchoice)
+
+
+    final1 = np.zeros((pop_size,2),dtype=object)
+    final2 = np.zeros((pop_size,4),dtype=object)
+
+    for i in range(pop_size):
+        final1[i][0]=arrparents[i]
+        final1[i][1]=arrparrerrs[i]
+        final2[i][0]=tempchoice[i]
+        final2[i][1]=arrchildren[i]
+        final2[i][2]=arrchilderrors[i]
+        final2[i][3]=arrchildrenmutated[i]
+
+
+    headers1 = ["Population", "Population Errors"]
+    headers2 = ["Parents", "Children", "Children Errors", "Mutated Children"]
+    table1 = tabulate(final1, headers1, tablefmt="fancy_grid")
+    table2 = tabulate(final2, headers2, tablefmt="fancy_grid")
+    print(table1)
+    print(table2)
+    # print(arrparents,"\n\n*******\n\n",arrparrerrs,"\n\n*******\n\n",arrchoices,"\n\n*******\n\n",tempchoice,"\n\n*******\n\n",arrchildren,"\n\n*******\n\n",arrchildrenmutated,"\n\n*******\n\n",arrchilderrors)
     
 
 def mutateall(temp,prob, mutate_range):
@@ -31,22 +71,6 @@ def mutateall(temp,prob, mutate_range):
     return vector
 
 
-# def crossover(vector1, vector2, index=-1):
-#     send1 = []
-#     send2 = []
-
-#     index = random.randint(0, MAX_DEG-1)
-
-#     for i in range(MAX_DEG):
-#         parity = random.randint(0, 1)
-#         if parity == 1:
-#             send1.append(vector1[i])
-#             send2.append(vector2[i])
-#         else:
-#             send1.append(vector2[i])
-#             send2.append(vector1[i])
-
-#     return mutation(send1), mutation(send2)
 def crossover(vector1, vector2, mutate_range,prob_mut_cross, index=-1):
     send1 = vector1.tolist()
     send2 = vector2.tolist()
@@ -118,7 +142,7 @@ def main():
         if((iter_num)%6==0 and iter_num!=0):
             mutate_range-=0.01
             prob_mut_cross+=0.01
-            print("::::::::::::::::changing ", mutate_range)
+            # print("::::::::::::::::changing ", mutate_range)
 
         #parents with their errors
         arrparents=np.copy(population)
@@ -132,7 +156,7 @@ def main():
         arrchildrenmutated=np.zeros((pop_size,MAX_DEG))
         arrchilderrors=np.zeros((pop_size))
     
-        print("\n\n\n\n********"+str(iter_num)+"*********")
+        # print("\n\n\n\n********"+str(iter_num)+"*********")
 
         parenerrorsinds = parenterrors.argsort()
         parenterrors = np.copy(parenterrors[parenerrorsinds[::1]])
@@ -141,11 +165,11 @@ def main():
         population = np.copy(population[parenerrorsinds[::1]])
 
         # debug statements
-        for j in range(pop_size):
-            print("person " + str(j)+" errorfunc" + str(parenterrors[j]))
-            print("person " + str(j)+" error1" + str(parenterrors1[j]))
-            print("person " + str(j)+" error2" + str(parenterrors2[j]))
-            print("\tvalues"+str(population[j])+"\n\n")
+        # for j in range(pop_size):
+        #     print("person " + str(j)+" errorfunc" + str(parenterrors[j]))
+        #     print("person " + str(j)+" error1" + str(parenterrors1[j]))
+        #     print("person " + str(j)+" error2" + str(parenterrors2[j]))
+        #     print("\tvalues"+str(population[j])+"\n\n")
 
         # Assign probabilities to the population
         # parentprobalities = gen_parent_probabilities(pop_size)
