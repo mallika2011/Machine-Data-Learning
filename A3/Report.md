@@ -5,7 +5,7 @@
     How exactly did you apply the mutations(if any).
     What were your hyperparameters like pool size, splitting point for creating new genes, etc and why did you choose those parameters?
     Statistical information like Number of iterations to converge, etc.
-    todo What heuristics did you apply, mention the ones that didn't work too.
+    What heuristics did you apply, mention the ones that didn't work too.
     todo Trace of output for the first 10 steps as shown:
 
     Initial population
@@ -245,6 +245,8 @@ else:
 The Genetic Algorithm is repeated (Step 3 - Step 7) for ```iter``` number of iterations (this was done considering the requests that can be made to the server in order to obtain the errors for the different vectors was limited).
 
 
+## DIAGRAMS FOR 3 CONSECUTIVE ITERATIONS
+
 ## FITNESS FUNCTION
 
 The fitness funciton is one that is used to decide whether an indivdual from a population will advance to the next generation or not. Greater the fitness, better is the individual. <br>
@@ -402,3 +404,6 @@ While constructing the Genetic Algorithm, the heuristics that we applied include
 2. *Modifying the fitness function mid-way* : To try and imporve the algorithm, we also tried changing the fitness function midway. For first ```k``` iterations we had a fitness function of ```err = err[0] + 1.5*err[1]```. After ```k``` iterations, we changed the fitness function to simply ```err = err[0] + err[1]```. We did so considering that with a 'not so random' population in the later iterations of the GA, we can see that both training nad validation errors are equally important and one cannot overpower the other in deciding the fitness of an individual. However, this approach did not help in reducing the errors either. 
 
 3. *Simulated Annealing* : In this method, we reduce the range within which a particular gene/element of the chromosome/vector can be mutated. We start off with a ```mutate_range``` of **0.1**. After every 6 iterations, this is **decreased** by **0.01**. As a consequence of the decreased ```mutate_range``` the vectors may now come very close to each other. To prevent the algorithm from converging to a local minima, we started off with a ```prob_mut``` of **0.7** and **increased**  by **0.01** every 6 iterations. This method helped us in the process of achieving the global minima.
+
+
+## TRACE FOR FIRST 10 ITERATIONS

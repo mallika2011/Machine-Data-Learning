@@ -201,7 +201,7 @@ def main():
             
             arrchoices[int(new_iter/2)][0]=np.copy(arr[0])
             arrchoices[int(new_iter/2)][1]=np.copy(arr[1])
-            arrposswap[int(new_iter/2)]=np.copy(temp[4])
+            arrposswap[int(new_iter/2)]=np.copy(np.sort(temp[4]))
 
             arrchildren[new_iter]=np.copy(temp[2])
             arrchildrenmutated[new_iter]=np.copy(temp[0])
