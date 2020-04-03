@@ -9,11 +9,11 @@ MAX_DEG = 11  # number of features
 key = '847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo'
 ranger = 10
 pc = 0.2
-pop_size = 10
+pop_size = 30
 select_sure = 3
-cross_select_from = 8
+cross_select_from = 7
 crossover_no = 5
-iter = 15
+iter = 37
 
 def formatArray(x):
     y=[]
@@ -149,8 +149,8 @@ def main():
         temp = population[j].tolist()
         err = server.get_errors(key, temp)
         # adding the two errors and storing in parenterror - fitness function
-        # parenterrors[j] = np.copy((err[0]+1.5*err[1]))
-        parenterrors[j] = np.copy((err[0]+err[1]))
+        parenterrors[j] = np.copy((err[0]+1.5*err[1]))
+        # parenterrors[j] = np.copy((err[0]+err[1]))
         parenterrors1[j] = np.copy((err[0]))
         parenterrors2[j] = np.copy((err[1]))
 
@@ -231,7 +231,7 @@ def main():
 
             # adding the two errors and storing in parenterror
             # if(iter_num >= 15):
-            childerrors[j] = np.copy((err[0]+err[1]))
+            childerrors[j] = np.copy((err[0]+1.5*err[1]))
             # else:
             #     childerrors[j] = np.copy((err[0]+1.5*err[1]))
             childerrors1[j] = np.copy((err[0]))
