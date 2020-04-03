@@ -32,7 +32,7 @@ def showtable(arrparents,arrparrerrs,arrchoices,arrchildren,arrchildrenmutated,a
     tempchoice = []
     for i in range(pop_size):
         ind = int(i/2)
-        tempchoice.append([[arrchoices[ind][0],arrchoices[ind][1]]])
+        tempchoice.append([["P"+str(int(arrchoices[ind][0])),"P"+str(int(arrchoices[ind][1]))]])
     tempchoice=np.array(tempchoice)
     
     tempswap = []

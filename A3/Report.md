@@ -349,6 +349,12 @@ With simulated annealing, this range *decreases by 0.01* every 6 iterations and 
 
 
 ## STATISTICAL INFORMATION :
+
+Below is a table that contains statistical inferences and details that we have derived whilst performing the Genetic Algorithm. 
+
+The table consists of outputs of many different *runs* of the algorithm. The parameters of each run have beem specified as well.
+
+
  |```pop size``` | ```iter``` |```cross select from``` | ```select sure``` | ```prob mut cross``` |  ```mutate range``` | ```crossover no```|file| ```sim. ann.```| ```train error``` | ```validation error```| ```comments```
 --- | --- | --- | --- |--- |--- |--- |--- |--- |--- |--- |---
 10 | 18 | 2 | 3 | 0.5 | 0.1 | 5|02_04_5| yes, 0.01 | 646685.2314547407|1451230.3945630102| error func is train + 1.5*val till 10th it
@@ -389,3 +395,10 @@ With simulated annealing, this range *decreases by 0.01* every 6 iterations and 
 
 ## HEURISTICS APPLIED:
 
+While constructing the Genetic Algorithm, the heuristics that we applied include : 
+
+1. *Using a fitness function with weights* : We ran the algorithm with a fitness function as follows :  ```err = err[0] + 1.5 * err[1]```. This function however did not seem to help our algorithm to converge to the global minima. The train and validation errors we received were still quite high.
+
+2. *Modifying the fitness function mid-way* : To try and imporve the algorithm, we also tried changing the fitness function midway. For first ```k``` iterations we had a fitness function of ```err = err[0] + 1.5*err[1]```. After ```k``` iterations, we changed the fitness function to simply ```err = err[0] + err[1]```. We did so considering that with a 'not so random' population in the later iterations of the GA, we can see that both training nad validation errors are equally important and one cannot overpower the other in deciding the fitness of an individual. However, this approach did not help in reducing the errors either. 
+
+3. *Simulated Annealing* : In this method, we reduce the range within which a particular gene/element of the chromosome/vector can be mutated. We start off with a ```mutate_range``` of **0.1**. After every 6 iterations, this is **decreased** by **0.01**. As a consequence of the decreased ```mutate_range``` the vectors may now come very close to each other. To prevent the algorithm from converging to a local minima, we started off with a ```prob_mut``` of **0.7** and **increased**  by **0.01** every 6 iterations. This method helped us in the process of achieving the global minima.
