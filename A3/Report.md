@@ -6,7 +6,7 @@
     What were your hyperparameters like pool size, splitting point for creating new genes, etc and why did you choose those parameters?
     Statistical information like Number of iterations to converge, etc.
     What heuristics did you apply, mention the ones that didn't work too.
-    todo Trace of output for the first 10 steps as shown:
+    Trace of output for the first 10 steps as shown:
 
     Initial population
     Vectors selected for crossover
@@ -46,7 +46,7 @@
 **Tanvi Karandikar    - 2018101059**
 
 
-## SUMMARY OF GENETIC ALGORITHM: 
+# SUMMARY OF GENETIC ALGORITHM: 
 
 The genetic algorithm is a search heuristic that is inspired by Charles Darwin’s theory of natural evolution. This algorithm reflects the process of natural selection where the fittest individuals are selected for reproduction in order to produce offspring of the next generation.
 
@@ -245,9 +245,45 @@ else:
 The Genetic Algorithm is repeated (Step 3 - Step 7) for ```iter``` number of iterations (this was done considering the requests that can be made to the server in order to obtain the errors for the different vectors was limited).
 
 
-## DIAGRAMS FOR 3 CONSECUTIVE ITERATIONS
+<br>
+<br>
+<br>
 
-## FITNESS FUNCTION
+
+
+# DIAGRAMS FOR 3 CONSECUTIVE ITERATIONS
+
+The diagrams representing the 3 iterations of the genetic algorithm are as follows.
+
+Each diagram is accompanied by its own set of Population, Children and Mutation vectors which are indexed and shown along with it. 
+
+The diagram makes use of these indices.
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+### DIAGRAM 1 :
+
+
+![det_2](./diagrams/2.png)
+![diag_2](./diagrams/diag_2.png)
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+### DIAGRAM 2 :
+
+![det_3](./diagrams/3.png)
+![diag_3](./diagrams/diag_3.png)
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+### DIAGRAM 3 :
+
+![det_4](./diagrams/4.png)
+![diag_4](./diagrams/diag_4.png)
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+# FITNESS FUNCTION
 
 The fitness funciton is one that is used to decide whether an indivdual from a population will advance to the next generation or not. Greater the fitness, better is the individual. <br>
 However, here we have been provided with the *train and validation errors* of the individual vectors. 
@@ -262,7 +298,7 @@ err = err1 + err2
 We have not included weights in our fitness function since otherwise the function would be biased to a particular error. Here, both training and validation error are equally important and hence it is hard to say which is more fit. 
 
 
-## CROSSOVER FUNCTION
+# CROSSOVER FUNCTION
 
 In the GA, crossover is a function that is performed on two parents to produce offsprings.
 There are two parts in the crossover function :
@@ -294,7 +330,7 @@ def crossover(vector1, vector2, mutate_range,prob_mut_cross, index=-1):
 ```
 
 
-## MUTATIONS
+# MUTATIONS
 
 Our mutation function takes 3 parameters 
 
@@ -311,7 +347,7 @@ We have used mutations in 2 places :
 2. On child vectors after crossover : Here the child vectors are mutated based on the parameters that have been passed to the function. 
 
 
-## HYPERPARAMETERS
+# HYPERPARAMETERS
 
 ```python 
 team_name = "team_62"  # for our reference
@@ -350,7 +386,7 @@ With simulated annealing, this range *decreases by 0.01* every 6 iterations and 
 
 
 
-## STATISTICAL INFORMATION :
+# STATISTICAL INFORMATION :
 
 Below is a table that contains statistical inferences and details that we have derived whilst performing the Genetic Algorithm. 
 
@@ -395,7 +431,7 @@ The table consists of outputs of many different *runs* of the algorithm. The par
 
 
 
-## HEURISTICS APPLIED:
+# HEURISTICS APPLIED:
 
 While constructing the Genetic Algorithm, the heuristics that we applied include : 
 
@@ -406,4 +442,115 @@ While constructing the Genetic Algorithm, the heuristics that we applied include
 3. *Simulated Annealing* : In this method, we reduce the range within which a particular gene/element of the chromosome/vector can be mutated. We start off with a ```mutate_range``` of **0.1**. After every 6 iterations, this is **decreased** by **0.01**. As a consequence of the decreased ```mutate_range``` the vectors may now come very close to each other. To prevent the algorithm from converging to a local minima, we started off with a ```prob_mut``` of **0.7** and **increased**  by **0.01** every 6 iterations. This method helped us in the process of achieving the global minima.
 
 
-## TRACE FOR FIRST 10 ITERATIONS
+# TRACE FOR FIRST 10 ITERATIONS
+
+<!-- Initial population
+    Vectors selected for crossover
+    Vectors after applying the crossover
+    Vectors before and after mutation -->
+
+**The following tables represent the *Trace* of the first 10 iterations**
+
+* *Table 1* : This table shows the following : 
+  - COL 1: Indices of the intiial population (P0,P1,P2,P3...)
+  - COL 1: Individuals of the populations (Vectors)
+  - COL 1: Errors corresponding to each individual in the population
+
+* *Table 2* : This table shows the following : 
+  - COL 1: Indices of the children population produced (C0,C1,C2,C3...)
+  - COL 2: The Vectors selected for crossover (That is the parents from which the children have been produced)
+  - COL 3: The indices at which the parent vector genes are swapped.
+  - COL 4: The child vectors produced after applying the crossover
+
+* *Table 3* : This table shows the following : 
+  - COL 1: Indices of the mutated children (M0,M1,M2, M3...)
+  - COL 2: Mutated child vectors after applying mutation
+  - COL 3: Errors corresponding to each mutated child
+
+**The parameters for this trace are :**
+
+* ```pop_size```: 10 
+* ```iter```: 15 
+* ```cross_select_from```: 8
+* ```select_sure```: 3 
+* ```prob_mut_cross```: 0.9 
+* ```mutate_range```: 0.1
+
+
+***TRACE HAS BEEN ATTACHED IN THE ZIP FOLDER AND CAN BE FOUND -- ```trace.txt```***
+
+
+<!-- <br><br><br> **ITERATION 1** <br><br><br>
+![im1_1](./traceImages/im1_1.png)
+![im1_2](./traceImages/im1_2.png)
+![im1_3](./traceImages/im1_3.png)
+
+<br><br><br> **ITERATION 2** <br><br><br>
+![im2_1](./traceImages/im2_1.png)
+![im2_2](./traceImages/im2_2.png)
+![im2_3](./traceImages/im2_3.png)
+
+<br><br><br> **ITERATION 3** <br><br><br>
+![im3_1](./traceImages/im3_1.png)
+![im3_2](./traceImages/im3_2.png)
+![im3_3](./traceImages/im3_3.png)
+
+<br><br><br> **ITERATION 4** <br><br><br>
+![im4_1](./traceImages/im4_1.png)
+![im4_2](./traceImages/im4_2.png)
+![im4_3](./traceImages/im4_3.png)
+
+<br><br><br> **ITERATION 5** <br><br><br>
+![im5_1](./traceImages/im5_1.png)
+![im5_2](./traceImages/im5_2.png)
+![im5_3](./traceImages/im5_3.png)
+
+<br><br><br> **ITERATION 6** <br><br><br>
+![im6_1](./traceImages/im6_1.png)
+![im6_2](./traceImages/im6_2.png)
+![im6_3](./traceImages/im6_3.png)
+
+<br><br><br> **ITERATION 7** <br><br><br>
+![im7_1](./traceImages/im7_1.png)
+![im7_2](./traceImages/im7_2.png)
+![im7_3](./traceImages/im7_3.png)
+
+<br><br><br> **ITERATION 8** <br><br><br>
+![im8_1](./traceImages/im8_1.png)
+![im8_2](./traceImages/im8_2.png)
+![im8_3](./traceImages/im8_3.png)
+
+<br><br><br> **ITERATION 9** <br><br><br>
+![im9_1](./traceImages/im9_1.png)
+![im9_2](./traceImages/im9_2.png)
+![im9_3](./traceImages/im9_3.png)
+
+<br><br><br> **ITERATION 10** <br><br><br>
+![im10_1](./traceImages/im10_1.png)
+![im10_2](./traceImages/im10_2.png)
+![im10_3](./traceImages/im10_3.png)
+
+<br><br><br> **ITERATION 11** <br><br><br>
+![im11_1](./traceImages/im11_1.png)
+![im11_2](./traceImages/im11_2.png)
+![im11_3](./traceImages/im11_3.png)
+
+<br><br><br> **ITERATION 12** <br><br><br>
+![im12_1](./traceImages/im12_1.png)
+![im12_2](./traceImages/im12_2.png)
+![im12_3](./traceImages/im12_3.png)
+
+<br><br><br> **ITERATION 13** <br><br><br>
+![im13_1](./traceImages/im13_1.png)
+![im13_2](./traceImages/im13_2.png)
+![im13_3](./traceImages/im13_3.png)
+
+<br><br><br> **ITERATION 14** <br><br><br>
+![im14_1](./traceImages/im14_1.png)
+![im14_2](./traceImages/im14_2.png)
+![im14_3](./traceImages/im14_3.png)
+
+<br><br><br> **ITERATION 15** <br><br><br>
+![im15_1](./traceImages/im15_1.png)
+![im15_2](./traceImages/im15_2.png)
+![im15_3](./traceImages/im15_3.png) -->
