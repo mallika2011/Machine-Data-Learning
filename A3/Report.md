@@ -351,6 +351,11 @@ With simulated annealing, this range *decreases by 0.01* every 6 iterations and 
 ## STATISTICAL INFORMATION :
  |```pop size``` | ```iter``` |```cross select from``` | ```select sure``` | ```prob mut cross``` |  ```mutate range``` | ```crossover no```|file| ```sim. ann.```| ```train error``` | ```validation error```| ```comments```
 --- | --- | --- | --- |--- |--- |--- |--- |--- |--- |--- |---
+10 | 18 | 2 | 3 | 0.5 | 0.1 | 5|02_04_5| yes, 0.01 | 646685.2314547407|1451230.3945630102| error func is train + 1.5*val till 10th it
+10 | 40 | 2 | 3 | 0.5 | 0.1 | 5| 02_04_4| yes, 0.01 | 818778.2585458648  |1411297.2916152105 | error func is train + 1.5*val till 10th it
+10 | 40 | 2 | 3 | 0.5 | 0.1 | 5| 02_04_3| yes, 0.01 |2288031.2945214207 |655413.9543223411  | error func is train + 1.5*val
+10 | 40 | 2 | 3 | 0.5 | 0.1 | 5| 02_04_2 | yes, 0.01 |1611429.8575185223  |1634666.6757553013 | error func is train + 1.5*val
+10 | 40 | 2 | 3 | 0.5 | 0.1 | 5| 02_04_1 | yes, 0.01 |  443878.6561975613   |  3371648.054347555| error func is train + 1.5*val
 10 | 18 | 2 | 3 | 0.5 | 0.1 | 5| 0104_4 | yes, 0.01 |  3617324.8067470654  |  3630659.506563143  | error func is train + 1.5*val
 30 | 39 | 13 | 6 | 0.5 | 0.1 | 5 | 0104_3 | yes, 0.01 |  803726.2793879907| 1513600.5745310718 | error func is train + 1.5*val
 30 | 39 | 10 | 5 | 0.5 | 0.1 | 5 | 0104_2 | yes, 0.01 | 2031799.9012306575  | 634542.5036451207 | error func is train + 1.5*val
