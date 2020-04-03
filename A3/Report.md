@@ -4,7 +4,7 @@
     Explain your crossover function.
     How exactly did you apply the mutations(if any).
     What were your hyperparameters like pool size, splitting point for creating new genes, etc and why did you choose those parameters?
-    todo Statistical information like Number of iterations to converge, etc.
+    Statistical information like Number of iterations to converge, etc.
     todo What heuristics did you apply, mention the ones that didn't work too.
     todo Trace of output for the first 10 steps as shown:
 

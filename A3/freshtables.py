@@ -1,6 +1,6 @@
 import numpy as np
-# import tester as server
-import client_moodle as server
+import tester as server
+# import client_moodle as server
 from tabulate import tabulate
 import random
 
@@ -9,9 +9,9 @@ MAX_DEG = 11  # number of features
 key = '847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo'
 ranger = 10
 pc = 0.2
-pop_size = 10
-select_sure = 5
-cross_select_from = 10
+pop_size = 30
+select_sure = 3
+cross_select_from = 7
 crossover_no = 5
 iter = 30
 
@@ -22,7 +22,7 @@ def formatArray(x):
     y=np.array(y)
     return y
 
-def showtable(arrparents,arrparrerrs,arrchoices,arrchildren,arrchildrenmutated,arrchilderrors):
+def showtable(arrparents,arrparrerrs,arrchoices,arrchildren,arrchildrenmutated,arrchilderrors,arrposswap):
 
     #format all arrays for printing 
     arrparents = formatArray(arrparents)
@@ -34,27 +34,40 @@ def showtable(arrparents,arrparrerrs,arrchoices,arrchildren,arrchildrenmutated,a
         ind = int(i/2)
         tempchoice.append([[arrchoices[ind][0],arrchoices[ind][1]]])
     tempchoice=np.array(tempchoice)
+    
+    tempswap = []
+    for i in range(int(pop_size/2)):
+        tempswap.append([arrposswap[i]])
+        tempswap.append([arrposswap[i]])
+    tempswap=np.array(tempswap)
 
 
     final1 = np.zeros((pop_size,3),dtype=object)
-    final2 = np.zeros((pop_size,4),dtype=object)
+    final2 = np.zeros((pop_size,3),dtype=object)
+    final3 = np.zeros((pop_size,2),dtype=object)
 
     for i in range(pop_size):
         final1[i][0]=i
         final1[i][1]=arrparents[i]
         final1[i][2]=arrparrerrs[i]
         final2[i][0]=tempchoice[i]
-        final2[i][1]=arrchildren[i]
-        final2[i][2]=arrchildrenmutated[i]
-        final2[i][3]=arrchilderrors[i]
+        final2[i][1]=tempswap[i]
+        final2[i][2]=arrchildren[i]
+        final3[i][0]=arrchildrenmutated[i]
+        final3[i][1]=arrchilderrors[i]
 
 
     headers1 = ["Index","Population", "Population Errors"]
-    headers2 = ["Parents", "Children","Mutated Children","Mutated Children Errors"]
+    headers2 = ["Parents", "Crossover positions","Children"]
+    headers3=  ["Mutated Children","Mutated Children Errors"]
     table1 = tabulate(final1, headers1, tablefmt="fancy_grid")
     table2 = tabulate(final2, headers2, tablefmt="fancy_grid")
+    table3 = tabulate(final3, headers3, tablefmt="fancy_grid")
+
+    # print("FINALLLLLL ", tempswap)
     print(table1)
     print(table2)
+    print(table3)
     # print(arrparents,"\n\n*******\n\n",arrparrerrs,"\n\n*******\n\n",arrchoices,"\n\n*******\n\n",tempchoice,"\n\n*******\n\n",arrchildren,"\n\n*******\n\n",arrchildrenmutated,"\n\n*******\n\n",arrchilderrors)
     
 
@@ -82,7 +95,7 @@ def crossover(vector1, vector2, mutate_range,prob_mut_cross, index=-1):
         send1[i] = np.copy(vector2[i])
         send2[i] = np.copy(vector1[i])
 
-    return mutateall(send1,prob_mut_cross,mutate_range), mutateall(send2,prob_mut_cross,mutate_range),send1,send2
+    return mutateall(send1,prob_mut_cross,mutate_range), mutateall(send2,prob_mut_cross,mutate_range),send1,send2,a
 
 
 def crossover_select2(parenterrors, num):
@@ -104,7 +117,7 @@ def check_match(vector1, vector2):
 def main():
 
     mutate_range=0.1
-    prob_mut_cross = 0.7
+    prob_mut_cross = 0.9
     print("pop_size:", pop_size, "iter:", iter, "cross_select_from",cross_select_from)
     print("select_sure",select_sure,"prob_mut_cross",prob_mut_cross,"mutate_range",mutate_range)
 
@@ -150,6 +163,7 @@ def main():
 
         #has popsize/2 pairs, each is a set of parents used to generate two children
         arrchoices=np.zeros((int(pop_size/2),2))
+        arrposswap=np.zeros((int(pop_size/2),5))
 
         #has the array of all the children
         arrchildren=np.zeros((pop_size,MAX_DEG))
@@ -187,6 +201,7 @@ def main():
             
             arrchoices[int(new_iter/2)][0]=np.copy(arr[0])
             arrchoices[int(new_iter/2)][1]=np.copy(arr[1])
+            arrposswap[int(new_iter/2)]=np.copy(temp[4])
 
             arrchildren[new_iter]=np.copy(temp[2])
             arrchildrenmutated[new_iter]=np.copy(temp[0])
@@ -299,7 +314,7 @@ def main():
         print("Min error1 = ", min_error1, "\n\n")
         print("Min error2 = ", min_error2, "\n\n")
 
-        showtable(arrparents,arrparrerrs,arrchoices,arrchildren,arrchildrenmutated,arrchilderrors)
+        showtable(arrparents,arrparrerrs,arrchoices,arrchildren,arrchildrenmutated,arrchilderrors,arrposswap)
 
     return to_send
 
