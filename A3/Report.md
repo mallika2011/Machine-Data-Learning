@@ -257,6 +257,8 @@ The diagrams representing the 3 iterations of the genetic algorithm are as follo
 
 Each diagram is accompanied by a table which contains its own set of Population, Children and Mutation vectors which are indexed and shown along with it. The diagram makes use of these indices.
 
+*NOTE : The DIAGRAMS were created with the code that was run with the specified sample values only for demonstration purposes and are not indicative of actual values used to submit the final best vector.*
+
 Table Coloumns : 
 
 * *Col 1:* Represents the indices of the individuals in the population. 
@@ -486,7 +488,7 @@ While constructing the Genetic Algorithm, the heuristics that we applied include
 
 
 ***TRACE HAS BEEN ATTACHED IN THE ZIP FOLDER AND CAN BE FOUND -- ```trace.txt```***
-
+*NOTE : The TRACE was run with the specified sample values only for demonstration purposes and are not indicative of actual values used to submit the final best vector.*
 
 <!-- <br><br><br> **ITERATION 1** <br><br><br>
 ![im1_1](./traceImages/im1_1.png)

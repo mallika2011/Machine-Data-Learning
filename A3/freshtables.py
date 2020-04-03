@@ -9,11 +9,11 @@ MAX_DEG = 11  # number of features
 key = '847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo'
 ranger = 10
 pc = 0.2
-pop_size = 30
-select_sure = 3
-cross_select_from = 7
+pop_size = 8
+select_sure = 2
+cross_select_from = 5
 crossover_no = 5
-iter = 37
+iter = 10
 
 def formatArray(x):
     y=[]
@@ -158,9 +158,16 @@ def main():
     for iter_num in range(iter):
 
         if((iter_num)%6==0 and iter_num!=0):
-            mutate_range-=0.01
-            prob_mut_cross+=0.01
-            print("::::::::::::::::changing ", mutate_range)
+
+            if(mutate_range<0.01):
+                mutate_range=0.01
+            else:
+                mutate_range-=0.01
+            if(prob_mut_cross>=1):
+                prob_mut_cross=1
+            else:
+                prob_mut_cross+=0.01
+            print("::::::::::::::::changing ", mutate_range, prob_mut_cross)
 
 
 
@@ -230,10 +237,10 @@ def main():
             err = server.get_errors(key, temp)
 
             # adding the two errors and storing in parenterror
-            # if(iter_num >= 15):
-            childerrors[j] = np.copy((err[0]+1.5*err[1]))
-            # else:
-            #     childerrors[j] = np.copy((err[0]+1.5*err[1]))
+            if(iter_num >= 25):
+                childerrors[j] = np.copy((err[0]+err[1]))
+            else:
+                childerrors[j] = np.copy((err[0]+1.5*err[1]))
             childerrors1[j] = np.copy((err[0]))
             childerrors2[j] = np.copy((err[1]))
             arrchilderrors[j]=np.copy(childerrors[j])
