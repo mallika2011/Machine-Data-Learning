@@ -255,9 +255,17 @@ The Genetic Algorithm is repeated (Step 3 - Step 7) for ```iter``` number of ite
 
 The diagrams representing the 3 iterations of the genetic algorithm are as follows.
 
-Each diagram is accompanied by its own set of Population, Children and Mutation vectors which are indexed and shown along with it. 
+Each diagram is accompanied by a table which contains its own set of Population, Children and Mutation vectors which are indexed and shown along with it. The diagram makes use of these indices.
 
-The diagram makes use of these indices.
+Table Coloumns : 
+
+* *Col 1:* Represents the indices of the individuals in the population. 
+* *Col 2:* Represents the errors of the individuals in the population. 
+* *Col 3:* Represents the probability with which the individuals are selected for crossover based on the errprs (fitness funciton). 
+* *Col 4:* Represents the parents selected for crossover from the top 8 parents (vectors before cross over). 
+* *Col 5:* Represents the set of indices at which the genes/elements are swapped between the two chromosomes/parent vectors. 
+* *Col 6:* Represents the indices of the children produced. 
+* *Col 1:* Represents the indices of the mutated children. 
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
