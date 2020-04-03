@@ -1,6 +1,6 @@
 import numpy as np
-import tester as server
-# import client_moodle as server
+# import tester as server
+import client_moodle as server
 from tabulate import tabulate
 import random
 
@@ -9,11 +9,11 @@ MAX_DEG = 11  # number of features
 key = '847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo'
 ranger = 10
 pc = 0.2
-pop_size = 30
+pop_size = 10
 select_sure = 3
-cross_select_from = 7
+cross_select_from = 8
 crossover_no = 5
-iter = 30
+iter = 15
 
 def formatArray(x):
     y=[]
@@ -43,23 +43,28 @@ def showtable(arrparents,arrparrerrs,arrchoices,arrchildren,arrchildrenmutated,a
 
 
     final1 = np.zeros((pop_size,3),dtype=object)
-    final2 = np.zeros((pop_size,3),dtype=object)
-    final3 = np.zeros((pop_size,2),dtype=object)
+    final2 = np.zeros((pop_size,4),dtype=object)
+    final3 = np.zeros((pop_size,3),dtype=object)
 
     for i in range(pop_size):
-        final1[i][0]=i
+
+        final1[i][0]="P"+str(i)
         final1[i][1]=arrparents[i]
         final1[i][2]=arrparrerrs[i]
-        final2[i][0]=tempchoice[i]
-        final2[i][1]=tempswap[i]
-        final2[i][2]=arrchildren[i]
-        final3[i][0]=arrchildrenmutated[i]
-        final3[i][1]=arrchilderrors[i]
+        
+        final2[i][0]="C"+str(i)
+        final2[i][1]=tempchoice[i]
+        final2[i][2]=tempswap[i]
+        final2[i][3]=arrchildren[i]
+        
+        final3[i][0]="M"+str(i)
+        final3[i][1]=arrchildrenmutated[i]
+        final3[i][2]=arrchilderrors[i]
 
 
     headers1 = ["Index","Population", "Population Errors"]
-    headers2 = ["Parents", "Crossover positions","Children"]
-    headers3=  ["Mutated Children","Mutated Children Errors"]
+    headers2 = ["Index","Parents", "Crossover positions","Children"]
+    headers3=  ["Index","Mutated Children","Mutated Children Errors"]
     table1 = tabulate(final1, headers1, tablefmt="fancy_grid")
     table2 = tabulate(final2, headers2, tablefmt="fancy_grid")
     table3 = tabulate(final3, headers3, tablefmt="fancy_grid")
@@ -157,9 +162,7 @@ def main():
             prob_mut_cross+=0.01
             print("::::::::::::::::changing ", mutate_range)
 
-            #parents with their errors
-        arrparents=np.copy(population)
-        arrparrerrs=np.copy(parenterrors)
+
 
         #has popsize/2 pairs, each is a set of parents used to generate two children
         arrchoices=np.zeros((int(pop_size/2),2))
@@ -177,6 +180,10 @@ def main():
         parenterrors1 = np.copy(parenterrors1[parenerrorsinds[::1]])
         parenterrors2 = np.copy(parenterrors2[parenerrorsinds[::1]])
         population = np.copy(population[parenerrorsinds[::1]])
+
+            #parents with their errors
+        arrparents=np.copy(population)
+        arrparrerrs=np.copy(parenterrors)
 
         # debug statements
         for j in range(pop_size):
