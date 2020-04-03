@@ -9,11 +9,11 @@ MAX_DEG = 11  # number of features
 key = '847FWwSwTAxKTPvfixjzNnxbeudiTzJ9psoVIdUxqehtQ5efNo'
 ranger = 10
 pc = 0.2
-pop_size = 30
+pop_size = 10
 select_sure = 3
-cross_select_from = 7
+cross_select_from = 8
 crossover_no = 5
-iter = 37
+iter = 15
 
 def formatArray(x):
     y=[]
