@@ -204,6 +204,22 @@ alpha=[0]*60
 alpha[comptonum(4,3,2)]=1 #probability of starting here is 1
 
 
+#Fields to include in the JSON : 
+
+#The A matrix - a
+a=np.array(a)
+a=np.transpose(a)
+print(a)
+print(a.shape)
+
+#The R array - r
+r=np.array(r)
+print("\n",r)
+
+#The alpha array - alpha
+alpha=np.array(alpha)
+print("\n",alpha)
+
 # x = cp.Variable(shape=(2,1), name="x")
 # A = np.array([[4,3],[-3,4]])
 
