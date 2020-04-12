@@ -1,6 +1,8 @@
 import cvxpy as cp
 import numpy as np
 import json
+import os
+import sys
 
 def check(health1,arrows1,stamina1,health2,arrows2,stamina2,dh,da,ds):
     if (dh==health1-health2) and (da==arrows1-arrows2) and (ds==stamina1-stamina2):
@@ -283,5 +285,11 @@ send["policy"] = policy
 send["objective"]=solution
 
 
-file_object = open("output.json", 'w')
+# Dumping the JSON object into the directory
+
+original = sys.stdout
+os.mkdir("./outputs")
+sys.stdout = original
+
+file_object = open("outputs/output.json", 'w')
 json.dump(send, file_object)
