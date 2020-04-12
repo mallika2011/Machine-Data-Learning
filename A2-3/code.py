@@ -1,5 +1,6 @@
 import cvxpy as cp
 import numpy as np
+import json
 
 def check(health1,arrows1,stamina1,health2,arrows2,stamina2,dh,da,ds):
     if (dh==health1-health2) and (da==arrows1-arrows2) and (ds==stamina1-stamina2):
@@ -142,9 +143,10 @@ health=5 #mult by 25
 arrows=4
 stamina=3 #mult by 50
 states = 60 
-totalAct = 152
 
-columns=0# every time we find an action we can add a column
+columns=0 # every time we find an action we can add a column
+r=[] #rewards array
+reward = -5
 actions=[]
 a=[]
 for h1 in range(0,health):
@@ -162,10 +164,17 @@ for h1 in range(0,health):
                     continue
 
                 #conditions for skipping actions
-                if (a1==0 and ac==0) or (s1==0 and ac==0) or (s1==0 and ac==1) or (s1==3 and ac==2):
+                if (a1==0 and ac==0) or (s1==0 and ac==0) or (s1==0 and ac==1) or (s1==2 and ac==2):
                     continue
                 
+                #reward =0 for terminal, reward = -5 for others
+                if(h1==0):
+                    r.append(0)
+                else:
+                    r.append(reward)
+                
                 columns+=1
+                # print(columns, ". In state ", h1,a1,s1,"taking action ", mapactions(ac))
                 tempac.append(ac)
                 newcol=[]
                 out=0
@@ -199,29 +208,35 @@ for h1 in range(0,health):
 # a and actions are prepared as list of lists
 # number of columns is stored in column
 
-r=[-10] * columns #check this value!!!
+# print(r)
 
 #initial probabilities
 alpha=[0]*60
 alpha[comptonum(4,3,2)]=1 #probability of starting here is 1
 
 
+#create the json object and add these lists to the json before they are used in cvxpy
+send = {}
+send["a"] = a
+send["r"]= r
+send["alpha"] = alpha
+
 #Fields to include in the JSON : 
 
 #The A matrix - a
 a=np.array(a)
 a=np.transpose(a)
-print(a)
-print(a.shape)
+# print(a)
+# print(a.shape)
 
 #The R array - r
 r=np.array(r)
-print("\n",r)
+# print("\n",r)
 
 #The alpha array - alpha
 alpha=np.array(alpha)
 alpha.shape=(states,1)
-print("\n",alpha)
+# print("\n",alpha)
 
 
 x = cp.Variable(shape=(columns,1), name="x")
@@ -232,6 +247,41 @@ objective = cp.Maximize(cp.sum(cp.matmul(r,x), axis=0))
 problem = cp.Problem(objective, constraints)
 
 solution = problem.solve()
-print(solution)
 
-print(x.value)
+x_send=[]
+
+for it in x.value:
+    x_send.append(it[0])    
+
+send["x"] = x_send
+
+policy=[]
+index=0
+for ac in actions:
+    #each element is an array
+    print(ac)
+    num=index
+    ac_taken=ac[0]
+
+    for i in range(len(ac)):
+        if x_send[num]>x_send[index]:
+            num=index
+            ac_taken=ac[0]
+        index+=1
+
+    h,a,s=numtocomp(num)
+    haslis=[]
+    haslis.append(h)
+    haslis.append(a)
+    haslis.append(s)
+    temp=[]
+    temp.append(haslis)
+    temp.append(mapactions(ac_taken))
+    policy.append(temp)
+
+send["policy"] = policy
+send["objective"]=solution
+
+
+file_object = open("output.json", 'w')
+json.dump(send, file_object)
