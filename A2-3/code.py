@@ -257,29 +257,72 @@ for it in x.value:
 
 send["x"] = x_send
 
+# print(actions)
+# # Actions checker
+# for i in range(len(actions)):
+#     l,k,j = numtocomp(i)
+#     print(l,k,j,actions[i])
+
+
+# policy=[]
+# index=0
+# for ac in actions:
+#     #each element is an array
+#     # print(ac)
+#     num=index
+#     ac_taken=ac[0]
+
+#     for i in range(len(ac)):
+#         if x_send[num]>x_send[index]:
+#             num=index
+#             ac_taken=ac[0]
+#         index+=1
+
+#     h,a,s=numtocomp(num)
+#     haslis=[]
+#     haslis.append(h)
+#     haslis.append(a)
+#     haslis.append(s)
+#     temp=[]
+#     temp.append(haslis)
+#     temp.append(mapactions(ac_taken))
+#     policy.append(temp)
+
+
 policy=[]
 index=0
-for ac in actions:
-    #each element is an array
-    print(ac)
-    num=index
-    ac_taken=ac[0]
+st = 0
 
-    for i in range(len(ac)):
-        if x_send[num]>x_send[index]:
-            num=index
-            ac_taken=ac[0]
-        index+=1
 
-    h,a,s=numtocomp(num)
-    haslis=[]
-    haslis.append(h)
-    haslis.append(a)
-    haslis.append(s)
-    temp=[]
-    temp.append(haslis)
-    temp.append(mapactions(ac_taken))
-    policy.append(temp)
+while(index <len(actions)):
+    
+    for ac in actions:
+        #each element is an array
+        # print(ac)
+        num=index
+        max_value = x_send[index]
+        ac_taken=ac[0]
+        allx=[]
+        for i in range(len(ac)):
+            allx.append(x_send[num])
+            if x_send[num]>=max_value:
+                max_value = x_send[num]
+                ac_taken=ac[i]
+            num+=1
+        index+=len(ac)
+        h,a,s=numtocomp(st)
+        st+=1
+        # print("\nx's:",allx)
+        # print("actions",ac)
+        print(h,a,s, "action : ", mapactions(ac_taken))
+        haslis=[]
+        haslis.append(h)
+        haslis.append(a)
+        haslis.append(s)
+        temp=[]
+        temp.append(haslis)
+        temp.append(mapactions(ac_taken))
+        policy.append(temp)
 
 send["policy"] = policy
 send["objective"]=solution

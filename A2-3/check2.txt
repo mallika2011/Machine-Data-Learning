@@ -1,0 +1,300 @@
+
+list of actions =  [3]
+x values  =  [0.9999999998699223]
+0 0 1  action : NOOP 
+
+
+list of actions =  [3]
+x values  =  [4.675964862287982e-11]
+0 0 2  action : NOOP 
+
+
+list of actions =  [3]
+x values  =  [2.628157412355072e-13]
+0 1 0  action : NOOP 
+
+
+list of actions =  [3]
+x values  =  [4.262931778922846e-11]
+0 1 1  action : NOOP 
+
+
+list of actions =  [3]
+x values  =  [2.2371336276186244e-11]
+0 1 2  action : NOOP 
+
+
+list of actions =  [3]
+x values  =  [2.628157412355072e-13]
+0 2 0  action : NOOP 
+
+
+list of actions =  [3]
+x values  =  [-3.381492999955128e-12]
+0 2 1  action : NOOP 
+
+
+list of actions =  [3]
+x values  =  [1.7463816065792178e-11]
+0 2 2  action : NOOP 
+
+
+list of actions =  [3]
+x values  =  [2.628157412355072e-13]
+0 3 0  action : NOOP 
+
+
+list of actions =  [3]
+x values  =  [2.628157412355072e-13]
+0 3 1  action : NOOP 
+
+
+list of actions =  [3]
+x values  =  [2.628157412355072e-13]
+0 3 2  action : NOOP 
+
+
+list of actions =  [3]
+x values  =  [2.628157412355072e-13]
+1 0 0  action : NOOP 
+
+
+list of actions =  [2]
+x values  =  [1.990391612453656]
+1 0 1  action : RECHARGE 
+
+
+list of actions =  [1, 2]
+x values  =  [1.8555191288978166, 1.5611372489292963e-10]
+1 0 2  action : DODGE 
+
+
+list of actions =  [1]
+x values  =  [1.2489001767001358e-10]
+1 1 0  action : DODGE 
+
+
+list of actions =  [2]
+x values  =  [2.105525137785066]
+1 1 1  action : RECHARGE 
+
+
+list of actions =  [0, 1, 2]
+x values  =  [1.9999999997398423, -1.7656845449296473e-11, 7.776596961064193e-11]
+1 1 2  action : SHOOT 
+
+
+list of actions =  [0, 1]
+x values  =  [9.31952746406608e-11, -3.067270741011536e-11]
+1 2 0  action : SHOOT 
+
+
+list of actions =  [2]
+x values  =  [9.145945264422454e-11]
+1 2 1  action : RECHARGE 
+
+
+list of actions =  [0, 1, 2]
+x values  =  [8.506586947012974e-11, 6.078805110542981e-11, 2.2089694460261196e-11]
+1 2 2  action : SHOOT 
+
+
+list of actions =  [0, 1]
+x values  =  [4.4408197975139286e-11, -2.6543406811621867e-11]
+1 3 0  action : SHOOT 
+
+
+list of actions =  [2]
+x values  =  [-2.3299042834583258e-11]
+1 3 1  action : RECHARGE 
+
+
+list of actions =  [0, 1, 2]
+x values  =  [-7.098974194236212e-12, -5.210763457019462e-11, -2.387686702540466e-11]
+1 3 2  action : SHOOT 
+
+
+list of actions =  [0, 1]
+x values  =  [3.4543999106521986e-11, -5.3401679559353163e-11]
+2 0 0  action : SHOOT 
+
+
+list of actions =  [2]
+x values  =  [0.7297549978831364]
+2 0 1  action : RECHARGE 
+
+
+list of actions =  [1, 2]
+x values  =  [1.0275558475111413, 3.482449054115718e-10]
+2 0 2  action : DODGE 
+
+
+list of actions =  [1]
+x values  =  [2.786226408104658e-10]
+2 1 0  action : DODGE 
+
+
+list of actions =  [2]
+x values  =  [1.6694856084355356]
+2 1 1  action : RECHARGE 
+
+
+list of actions =  [0, 1, 2]
+x values  =  [0.4424189286168401, 0.8951883903511595, 0.6580145975539808]
+2 1 2  action : DODGE 
+
+
+list of actions =  [0, 1]
+x values  =  [0.5264116779863436, 5.686355329688412e-11]
+2 2 0  action : SHOOT 
+
+
+list of actions =  [2]
+x values  =  [1.0652433328724873]
+2 2 1  action : RECHARGE 
+
+
+list of actions =  [0, 1, 2]
+x values  =  [0.4000096141040468, 4.556920300204301e-10, 0.7889497236475611]
+2 2 2  action : RECHARGE 
+
+
+list of actions =  [0, 1]
+x values  =  [0.6311597789181898, -1.240365506461434e-13]
+2 3 0  action : SHOOT 
+
+
+list of actions =  [2]
+x values  =  [3.849610801876808e-10]
+2 3 1  action : RECHARGE 
+
+
+list of actions =  [0, 1, 2]
+x values  =  [1.6985001292822188e-10, -4.695028457586793e-11, 1.891265276565083e-10]
+2 3 2  action : RECHARGE 
+
+
+list of actions =  [0, 1]
+x values  =  [1.94067326834938e-10, -4.192556762476104e-11]
+3 0 0  action : SHOOT 
+
+
+list of actions =  [2]
+x values  =  [0.420611814942967]
+3 0 1  action : RECHARGE 
+
+
+list of actions =  [1, 2]
+x values  =  [0.5865255680721023, 3.4156542071532667e-10]
+3 0 2  action : DODGE 
+
+
+list of actions =  [1]
+x values  =  [2.7321161451508174e-10]
+3 1 0  action : DODGE 
+
+
+list of actions =  [2]
+x values  =  [0.9845952650378579]
+3 1 1  action : RECHARGE 
+
+
+list of actions =  [0, 1, 2]
+x values  =  [0.3141667289694078, 0.45294067637580704, 0.45136502614101315]
+3 1 2  action : DODGE 
+
+
+list of actions =  [0, 1]
+x values  =  [0.361092020890906, 2.1861748456310718e-11]
+3 2 0  action : SHOOT 
+
+
+list of actions =  [2]
+x values  =  [0.9147406511910847]
+3 2 1  action : RECHARGE 
+
+
+list of actions =  [0, 1, 2]
+x values  =  [0.2690026471407827, 0.7875467021511742, 0.5321265515964506]
+3 2 2  action : DODGE 
+
+
+list of actions =  [0, 1]
+x values  =  [0.42570124123245806, 4.466542901393184e-11]
+3 3 0  action : SHOOT 
+
+
+list of actions =  [2]
+x values  =  [0.7875467020861017]
+3 3 1  action : RECHARGE 
+
+
+list of actions =  [0, 1, 2]
+x values  =  [0.2720879076637911, -5.1074785841579895e-11, 0.44743681756547776]
+3 3 2  action : RECHARGE 
+
+
+list of actions =  [0, 1]
+x values  =  [0.35794945409275597, -4.040230171740773e-11]
+4 0 0  action : SHOOT 
+
+
+list of actions =  [2]
+x values  =  [0.1187484296302197]
+4 0 1  action : RECHARGE 
+
+
+list of actions =  [1, 2]
+x values  =  [0.164488849206264, 5.939949093071854e-10]
+4 0 2  action : DODGE 
+
+
+list of actions =  [1]
+x values  =  [4.747154879340513e-10]
+4 1 0  action : DODGE 
+
+
+list of actions =  [2]
+x values  =  [0.3091491639985499]
+4 1 1  action : RECHARGE 
+
+
+list of actions =  [0, 1, 2]
+x values  =  [0.12420194768876588, 0.111809765358538, 0.17372526488010567]
+4 1 2  action : RECHARGE 
+
+
+list of actions =  [0, 1]
+x values  =  [0.1389802118037794, 9.99164385457043e-11]
+4 2 0  action : SHOOT 
+
+
+list of actions =  [2]
+x values  =  [0.29877438993227934]
+4 2 1  action : RECHARGE 
+
+
+list of actions =  [0, 1, 2]
+x values  =  [0.18673259736501427, 0.3684250702812824, 0.3191814836506619]
+4 2 2  action : DODGE 
+
+
+list of actions =  [0, 1]
+x values  =  [0.25534518686644175, 5.378728783169216e-11]
+4 3 0  action : SHOOT 
+
+
+list of actions =  [2]
+x values  =  [0.36842507019619347]
+4 3 1  action : RECHARGE 
+
+
+list of actions =  [0, 1, 2]
+x values  =  [0.15177337116968637, -6.385227252294208e-11, 0.17870835629402831]
+4 3 2  action : RECHARGE 
+
+
+list of actions =  [0, 1]
+x values  =  [1.1429666850975693, -6.253850759606887e-11]
+0 0 0  action : SHOOT 
+

@@ -77,9 +77,16 @@ Each element of **x** (x<sub>ij</sub>) represents the expected number of times a
 Once the LPP is solved and the vector *x* is obtained, the optimal policy is one that selects that action with the **maximum expected value** for each particular state. 
 
 
+ <!-- Can there be multiple policies? Why? What changes can you make in your code to
+generate another policy? ​(Do not paste code snippets, explain the changes in
+terms of how they will affect the A matrix, R vector, alpha vector etc.) -->
 
 
+## MULTIPLE POLICIES :
 
+Yes there can be multiple policies that can be generated for a single MDP. 
 
+* In order to select an optimal action to be taken in a state, we select the one with the maximum value for *expected number of times the action will be taken in that state*. It may so happen that this *expected value* is the same for 2 or more actions in the same state. Hence if the condition to look for the maximum is changed from a strict inequality to a normal inequality, then only the first action amongst these equal ones will be chosen. 
 
+* Changing the **reward/step-cost/penalty** for each state can also result in a change in the policy. Since if the penalty is higher (stepcost is lower) the agent will want to and try to reach the terminal state faster with a greater reward.
 
