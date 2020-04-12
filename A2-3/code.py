@@ -219,7 +219,6 @@ alpha[comptonum(4,3,2)]=1 #probability of starting here is 1
 
 #create the json object and add these lists to the json before they are used in cvxpy
 send = {}
-send["a"] = a
 send["r"]= r
 send["alpha"] = alpha
 
@@ -228,6 +227,7 @@ send["alpha"] = alpha
 #The A matrix - a
 a=np.array(a)
 a=np.transpose(a)
+send["a"] = a.tolist()
 # print(a)
 # print(a.shape)
 
