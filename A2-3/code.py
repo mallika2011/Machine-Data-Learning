@@ -102,8 +102,8 @@ def recharge (h1,a1,s1,h2,a2,s2):
 
 def numtocomp(num):
     s=num%3
-    a=(num/3)%4
-    h=(num/12)%5
+    a=(int(num/3))%4
+    h=(int(num/12))%5
     
     return h,a,s
 
@@ -158,7 +158,7 @@ for h1 in range(0,health):
                 # for each action
 
                 #noop conditions
-                if (ac!=4 and h1==0) or (ac==4 and h1!=0):
+                if (ac!=3 and h1==0) or (ac==3 and h1!=0):
                     continue
 
                 #conditions for skipping actions
@@ -185,7 +185,7 @@ for h1 in range(0,health):
                             newcol.append(-prob) #inflow
 
                 #exception case oof noop    
-                if ac==4:
+                if ac==3:
                     out=1
 
                 #now adding the outflow of        
@@ -224,7 +224,7 @@ alpha.shape=(states,1)
 print("\n",alpha)
 
 
-x = cp.Variable(shape=(totalAct,1), name="x")
+x = cp.Variable(shape=(columns,1), name="x")
 
 
 constraints = [cp.matmul(a, x) == alpha, x>=0]
