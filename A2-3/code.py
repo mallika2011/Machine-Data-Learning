@@ -219,8 +219,7 @@ alpha[comptonum(4,3,2)]=1 #probability of starting here is 1
 
 #create the json object and add these lists to the json before they are used in cvxpy
 send = {}
-send["r"]= r
-send["alpha"] = alpha
+
 
 #Fields to include in the JSON : 
 
@@ -230,6 +229,9 @@ a=np.transpose(a)
 send["a"] = a.tolist()
 # print(a)
 # print(a.shape)
+
+send["r"]= r
+send["alpha"] = alpha
 
 #The R array - r
 r=np.array(r)
@@ -287,7 +289,7 @@ for ac in actions:
     temp.append(haslis)
     temp.append(mapactions(ac_taken))
     policy.append(temp)
-    print(h,a,s, mapactions(ac_taken),ac_taken,ac,allx)
+    # print(h,a,s, mapactions(ac_taken),ac_taken,ac,allx)
 
 send["policy"] = policy
 send["objective"]=solution
