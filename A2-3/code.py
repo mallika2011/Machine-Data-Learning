@@ -257,40 +257,6 @@ for it in x.value:
 
 send["x"] = x_send
 
-# print(actions)
-# # Actions checker
-# for i in range(len(actions)):
-#     l,k,j = numtocomp(i)
-#     print(l,k,j,actions[i])
-
-
-# policy=[]
-# index=0
-# it=0
-# for ac in actions:
-#     #each element is an array
-#     # print(ac)
-#     num=index
-#     ac_taken=ac[0]
-#     debug=[]
-#     for i in range(len(ac)):
-#         debug.append(x_send[index])
-#         if x_send[num]<=x_send[index]:
-#             num=index
-#             ac_taken=ac[i]
-#         index+=1
-#     h,a,s=numtocomp(it)
-#     haslis=[]
-#     haslis.append(h)
-#     haslis.append(a)
-#     haslis.append(s)
-#     temp=[]
-#     temp.append(haslis)
-#     temp.append(mapactions(ac_taken))
-#     policy.append(temp)
-#     print(h,a,s,mapactions(ac_taken),ac_taken,ac,debug)
-#     it+=1
-
 policy=[]
 index=0
 st = 0
