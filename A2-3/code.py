@@ -266,19 +266,20 @@ send["x"] = x_send
 
 # policy=[]
 # index=0
+# it=0
 # for ac in actions:
 #     #each element is an array
 #     # print(ac)
 #     num=index
 #     ac_taken=ac[0]
-
+#     debug=[]
 #     for i in range(len(ac)):
-#         if x_send[num]>x_send[index]:
+#         debug.append(x_send[index])
+#         if x_send[num]<=x_send[index]:
 #             num=index
-#             ac_taken=ac[0]
+#             ac_taken=ac[i]
 #         index+=1
-
-#     h,a,s=numtocomp(num)
+#     h,a,s=numtocomp(it)
 #     haslis=[]
 #     haslis.append(h)
 #     haslis.append(a)
@@ -287,42 +288,40 @@ send["x"] = x_send
 #     temp.append(haslis)
 #     temp.append(mapactions(ac_taken))
 #     policy.append(temp)
-
+#     print(h,a,s,mapactions(ac_taken),ac_taken,ac,debug)
+#     it+=1
 
 policy=[]
 index=0
 st = 0
 
-
-while(index <len(actions)):
-    
-    for ac in actions:
-        #each element is an array
-        # print(ac)
-        num=index
-        max_value = x_send[index]
-        ac_taken=ac[0]
-        allx=[]
-        for i in range(len(ac)):
-            allx.append(x_send[num])
-            if x_send[num]>=max_value:
-                max_value = x_send[num]
-                ac_taken=ac[i]
-            num+=1
-        index+=len(ac)
-        h,a,s=numtocomp(st)
-        st+=1
-        # print("\nx's:",allx)
-        # print("actions",ac)
-        print(h,a,s, "action : ", mapactions(ac_taken))
-        haslis=[]
-        haslis.append(h)
-        haslis.append(a)
-        haslis.append(s)
-        temp=[]
-        temp.append(haslis)
-        temp.append(mapactions(ac_taken))
-        policy.append(temp)
+for ac in actions:
+    #each element is an array
+    # print(ac)
+    num=index
+    max_value = x_send[index]
+    ac_taken=ac[0]
+    allx=[]
+    for i in range(len(ac)):
+        allx.append(x_send[num])
+        if x_send[num]>=max_value:
+            max_value = x_send[num]
+            ac_taken=ac[i]
+        num+=1
+    index+=len(ac)
+    h,a,s=numtocomp(st)
+    st+=1
+    # print("\nx's:",allx)
+    # print("actions",ac)
+    haslis=[]
+    haslis.append(h)
+    haslis.append(a)
+    haslis.append(s)
+    temp=[]
+    temp.append(haslis)
+    temp.append(mapactions(ac_taken))
+    policy.append(temp)
+    print(h,a,s, mapactions(ac_taken),ac_taken,ac,allx)
 
 send["policy"] = policy
 send["objective"]=solution
