@@ -297,15 +297,9 @@ send["objective"]=solution
 
 # Dumping the JSON object into the directory
 
-# original = sys.stdout
-# os.mkdir("./outputs")
-# sys.stdout = original
+original = sys.stdout
+os.mkdir("./outputs")
+sys.stdout = original
 
-# file_object = open("outputs/output.json", 'w')
-# json.dump(send, file_object)
-
-
-filename="./outputs/output.json"
-os.makedirs(os.path.dirname(filename), exist_ok=True)
-with open(filename, "w") as file_object:
-    json.dump(send,file_object)
+file_object = open("outputs/output.json", 'w')
+json.dump(send, file_object)
