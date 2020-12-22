@@ -1,0 +1,5 @@
+2
+f[1]<170,Y
+f[1]>=170 and f[2]=='Long',N
+f[1]>=170 and f[2]=='Short' and f[0]=='Brown',N
+f[1]>=170 and f[2]=='Short' and f[0]=='Black',Y

@@ -93,10 +93,12 @@ terms of how they will affect the A matrix, R vector, alpha vector etc.) -->
 
 Yes there can be multiple policies that can be generated for a single MDP. 
 
-* In order to select an optimal action to be taken in a state, we select the one with the maximum value for *expected number of times the action will be taken in that state*. It may so happen that this *expected value* is the same for 2 or more actions in the same state. Hence if the condition to look for the maximum is changed from a strict inequality to a normal inequality, then only the first action amongst these equal ones will be chosen. 
+* In order to select an optimal action to be taken in a state, we select the one with the maximum value for *expected number of times the action will be taken in that state*. It may so happen that this *expected value* is the same for 2 or more actions in the same state. Hence if the condition to look for the maximum is changed from a strict inequality to a normal inequality, then only the first action amongst these equal ones will be chosen. This not affect the values of the matrix A, or the values of the vectors R, X or alpha.
 
-* Changing the **reward/step-cost/penalty** for each state can also result in a change in the policy. Since if the penalty is higher (stepcost is lower) the agent will want to and try to reach the terminal state faster with a greater reward.
+* Likewise if the actions are mapped to the numbers 0,1,2,3, differently and not the way they currently are mapped (0:SHOOT, 1:DODGE, 2:RECHARGE, 3:NOOP) this can also lead to selection of a different action in case of 2 or more actions having the same *expected value*. This will also not affect the value of A, R, X or alpha.
 
-* Selecting a different start state can also result in generating a different policy to the MDP. That is any change in the *alpha* vector can change the policy. 
+* Changing the **reward/step-cost/penalty** for each state can also result in a change in the policy. Since if the penalty is higher (stepcost is lower) the agent will want to and try to reach the terminal state faster with a greater reward. Here the R vector will be different.
+
+* Selecting a different start state can also result in generating a different policy to the MDP. That is any change in the *alpha* vector can change the policy.
 
 * Furthermore, changing values of parameters such as the probabilities of taking various different actions, the rewards/penalties received at each state etc will obviously change the policy since the state diagram of the problem itself would be different in such cases.
